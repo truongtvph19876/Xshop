@@ -28,7 +28,7 @@
         if(empty($cfpassword)) {
             $error['cfpassword'] = $messageEmpty;
         } else {
-            if(strcmp($cfpassword, $password)) $error['cfpassword'] = 'Mật khẩu không trùng khớp';
+            if(strcmp($cfpassword, $password) != 0) $error['cfpassword'] = 'Mật khẩu không trùng khớp';
         }
 
         

@@ -23,7 +23,7 @@
             </section>
             <!-- navigation -->
             <nav class="col-5">
-                <ul class="row nav ">
+                <ul class="row nav fs-6 fw-bold">
                     <li class="col"><a class="" href="index.php">Trang chủ</a></li>
                     <li class="col"><a class="" href="index.php?act=gioithieu">Giới thiệu</a></li>
                     <li class="col"><a class="" href="index.php?act=lienhe">Liên hệ</a></li>

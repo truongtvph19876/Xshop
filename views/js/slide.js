@@ -3,18 +3,20 @@ let dots = document.querySelector('.dots');
 
 
 class Slide {
-    constructor(slides,dots, index = 0, time) {
+    constructor(slides,dots, index = 0, time,) {
         this.slides = slides;
         this.dots = dots;
         this.index = index;
         this.time = time;
         this.slides[this.index].classList.add("show-slide");
-        
-        let dot ='';
+        let dothtml ='';
         for (let index = 0; index < this.slides.length; index++) {
-            dot += '<div class="dot-slide"></div>';
+            dothtml += '<div class="dot-slide dot"></div>';
         }
-        this.dots.innerHTML = dot;
+        this.dots.innerHTML = dothtml;
+
+
+        
     }
     
     
@@ -25,6 +27,10 @@ class Slide {
         let nextIndex = currentIndex + 1;
         let slideLength = this.slides.length;
         
+        let dot = document.querySelectorAll(".dot");
+        
+        dot[currentIndex].classList.add("dot-current");
+
         let autoSlide = setInterval(() => {
             currentIndex = currentIndex >= slideLength ? 0 : currentIndex;
             prevIndex = currentIndex - 1;
@@ -38,16 +44,23 @@ class Slide {
                 slides[i].classList.remove("show-slide");
                 slides[i].classList.remove("prev-slide");
                 slides[i].classList.remove("next-slide");
+                dot[i].classList.remove("dot-current");
     
             }
 
             slides[currentIndex].classList.add("show-slide");
             slides[prevIndex].classList.add("prev-slide");
             slides[nextIndex].classList.add("next-slide");
+            dot[currentIndex].classList.add("dot-current");
+
             currentIndex++;
 
         }, this.time);
 
+    }
+
+    nextSlide(index) {
+        
     }
 
     

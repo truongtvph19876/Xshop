@@ -177,6 +177,10 @@ main {
     background: gray;
 }
 
+
+.dot-current {
+    background: #ffffff;
+}
 /* right content */
 .right-content {
     width: 20%;

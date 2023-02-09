@@ -36,4 +36,15 @@
         $listComments = pdo_query($sql);
         return $listComments;
     }
+
+    function getComments() {
+        $conn = pdo_get_connection();
+        $sql = "SELECT * FROM binhluan WHERE 1";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $comments;
+    }
+
+
 ?>

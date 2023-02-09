@@ -1,8 +1,8 @@
 <!-- partial:partials/_footer.html -->
 <footer class="footer">
             <div class="d-sm-flex justify-content-center justify-content-sm-between">
-              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
-              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin templates</a> from Bootstrapdash.com</span>
+              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © Nhóm 6 Dự Án Mẫu WE18101</span>
+              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"><a href="#1" target="_blank">Trần Văn Trường - PH19876</a> With <a href="#1" target="_blank">Lưu Anh Tuấn - PH19427</a></span>
             </div>
           </footer>
           <!-- partial -->

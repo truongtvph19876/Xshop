@@ -1,115 +1,155 @@
-<?php 
-  if(isset($_POST['sendcomment'])) {
-    $noidung = $_POST['comment'];
-    $idUser = $_SESSION['idUser'];
-    $ngaybinhluan = date("Y-m-d H:i:s");
-    $idProd = $_GET['id'];
-    $error =[];
+<head>
+  <link rel="stylesheet" href="../css/chi_tiet_san_pham.css">
+  <link rel="stylesheet" href="../css/index.css">
+  <link rel="stylesheet" href="../css/css/bootstrap.min.css">
+</head>
 
-    if(empty($noidung)) {
-      $error['noidung'] = "Vui lòng nhập bình luận";
-    }
-    if($idUser <= 0) {
-      $error['user'] = "Loi user id";
-    }
-    if($idUser <= 0) {
-      $error['sanpham'] = "Loi sanpham id";
+<?php
+session_start();
+
+// Update the details below with your MySQL details
+  include $_SERVER['DOCUMENT_ROOT'] . '/DuAnMau/model/pdo.php';
+  include $_SERVER['DOCUMENT_ROOT'] . '/DuAnMau/model/nguoidung.php';
+  include $_SERVER['DOCUMENT_ROOT'] . '/DuAnMau/model/sanpham.php';
+
+  // Below function will convert datetime to time elapsed string
+function handleCommentTime($from, $to = null) {
+    $result = '';
+    if(isset($to)) {
+
+    } else {
+      $from = new DateTime($from);
+      $to = new DateTime(date("Y-m-d H:i:s"));
+      
+      if ($from->diff($to) === null) {
+        echo "Không thể chuyển DateInterval object thành array";
+    } else {
+        $arraytmp = get_object_vars($from->diff($to));
+        $array = array_slice($arraytmp, 0, 6);
+        $string = ['năm', 'tháng', 'ngày', 'giờ', 'phút', 'giây'];
+        $newArray = array_combine($string, $array);
+
+        foreach ($newArray as $key => $val) {
+          if($val > 0) {
+            $result = $val . ' ' . $key;
+            break;
+          } else {
+            $result = 'Vừa xong';
+          }
+        }
     }
 
-    if(empty($error)) {
-      $sql = "INSERT INTO binhluan (noidung, iduser, idpro, ngaybinhluan) VALUES
-      ('$noidung', '$idUser', '$idProd', '$ngaybinhluan')";
-      pdo_execute($sql);
-
     }
-    
+
+    return $result;
+}
+
+// This function will populate the comments and comments replies using a loop
+function show_comments($comments, $parent_id = -1) {
+  $html = '';
+
+  if ($parent_id != -1) {
+      // If the comments are replies sort them by the "submit_date" column
+      array_multisort(array_column($comments, 'ngaybinhluan'), SORT_ASC, $comments);
   }
-  
+  // Iterate the comments using the foreach loop
+  foreach ($comments as $comment) {
+      if ($comment['id_parent'] == $parent_id) {
+          // tính toán thời gian bình luạna
+          $commentTime = handleCommentTime($comment['ngaybinhluan']);
+          //lấy thông tin người dùng và sản phẩm từ id
+          $user = getUser($comment['iduser']);
+          $imgUser = $user['img'];
+          // Add the comment to the $html variable
+          $html .= '
+          <div class="row w-100 mt-3 comment border-0 m-0 p-0">
+        <!--  -->
+        <div class="col-12 g-bg-secondary  border-top border-primary p-0">
+            <div class="media g-mb-30 media-comment d-flex pl-2">
+                <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15d" src="'.$imgUser.'" alt="Image Description">
+                <div class="media-body w-100" style="padding-left:40px">
+                  <div class="g-mb-15">
+                    <h5 class="h5 g-color-gray-dark-v1 mb-0">'.$user['tendn'].'</h5>
+                    <span class="g-color-gray-dark-v4 g-font-size-12">'.$commentTime.'</span>
+                  </div>
+            
+                  <p>'.$comment['noidung'].'</p>
+            
+                  <ul class="list-inline d-sm-flex my-0">
+                                        
+                    <li class="list-inline-item ml-auto w-100">
+                        <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover text-decoration-none d-flex align-items-baseline gap-1 rep-btn" href="#!" data-comment-id="'.$comment['id'].'">
+                          <i class="fa fa-reply g-pos-rel g-top-1 g-mr-3"></i>
+                          <p class="text-nowrap">Trả lời</p>
+                        </a>
+                        <!-- Form write comment -->
+                        
+                        ' . show_write_comment_form($comment['id']) . '
+                        <!-- end form  -->
+                    </li>
+                    </ul>
+                    <!-- subcomment -->
+                    ' . show_comments($comments, $comment['id']) . '
+                    <!--  -->
+                        
+                  </ul>
+                </div>
+            </div>
+        </div>
+        <!--  -->
+    </div>
+          ';
+      }
+  }
+  return $html;
+}
+
+// This function is the template for the write comment form
+function show_write_comment_form($parent_id = -1, $display = 'none') {
+
+  $html = '
+  <div class="write_comment" data-comment-id="'.$parent_id.'" style="display:'.$display.'">
+      <form class="align-items-start" method="post">
+          <input name="parent_id" type="hidden" value="'.$parent_id.'">
+          <textarea class="form-control w-100" rows="3"  name="content" placeholder="Write your comment here..." required></textarea>
+          <button class="btn btn-primary mt-1" type="submit">Gui</button>
+      </form>
+  </div>
+  ';
+  return $html;
+}
+
+// Page ID needs to exist, this is used to determine which comments are for which page
+  $pdo =pdo_get_connection();
+    $stmt = $pdo->prepare('SELECT * FROM binhluan WHERE idpro = ? ORDER BY ngaybinhluan DESC');
+    $stmt->execute([ $_GET['page_id'] ]);
+    $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+    if(isset($_POST['content']) && $_SESSION['username']) {
+       $parent_id = $_POST['parent_id'];
+       $userId = $_SESSION['idUser'];
+       $content = $_POST['content'];
+       $prodId  = $_GET['page_id'];
+       $today = date("Y-m-d H:i:s");
+
+      $sql = "INSERT INTO binhluan (`id_parent`, `noidung`, `iduser`, `idpro`, `ngaybinhluan`) VALUES
+      ('$parent_id', '$content','$userId', '$prodId', '$today')";
+      pdo_query($sql);
+
+    }
 ?>
+
 
 <h2 class="mt-3 border-bottom border-primary border-2">Bình luận</h2>
 
 <?php 
-  if(isset($_SESSION['username'])){
-?>
-<form action=""></form>
-<form action="" method="post" class="align-items-start">
-<div class="w-75 d-flex">
-        <input type="text" name="comment" class="form-control" placeholder="Viết bình luận">
-        <button class="btn btn-primary" name="sendcomment">Gửi</button>
-      </div>
-      <span class="text-danger"><?php echo $message = !empty($error['noidung']) ? $error['noidung'] : "" ?></span>
-      </form>
-<?php }?>
-
-
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
-<?php 
-  $listComments = loadComments($_GET['id']);
-  foreach($listComments as $comment):
-    extract($comment); 
-    $userbinhluan = getUser($iduser);
-    extract($userbinhluan);
-
-    $image = !empty($img) ? $img : "./uploads/customer/images.png";
-
-
-    $date1 = new DateTime($ngaybinhluan);
-    $date2 = new DateTime(date("Y-m-d H:i:s"));
-    $interval = $date1->diff($date2);
-
-    $timeAgo = '';
-    $timeAgo .= $interval->y > 0 ? $interval->y . " năm " : "";
-    $timeAgo .= $interval->m > 0 ? $interval->m . " tháng ": "";
-    $timeAgo .= $interval->d > 0 ? $interval->d . " ngày ": "";
-    $timeAgo .= $interval->h > 0 ? $interval->h . " giờ ": "";
-    $timeAgo .= $interval->i > 0 ? $interval->i . " phút ": "";
-    $timeAgo .= $interval->s > 0 ? $interval->s . " giây ": "";
-    $timeAgo .= $interval->s == 0 ? " vừa xong" : " trước";
-    
+if (isset($_SESSION['username'])) {
+  echo show_write_comment_form(-1,'block');
+} else {
+  echo 'Vui lòng đăng nhập để bình luận';
+}
 ?>
 
+<?php echo show_comments($comments)?>
 
-<div class="container">
-<div class="row">
-    <!--  -->
-    <div class="col-md-8">
-        <div class="media g-mb-30 media-comment d-flex">
-            <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15" src="<?php echo $image?>" alt="Image Description">
-            <div class="media-body u-shadow-v18 g-bg-secondary g-pa-30 w-100">
-              <div class="g-mb-15">
-                <h5 class="h5 g-color-gray-dark-v1 mb-0"><?php echo $tendn?></h5>
-                <span class="g-color-gray-dark-v4 g-font-size-12"><?php echo $timeAgo?></span>
-              </div>
-        
-              <p><?php echo $noidung?></p>
-        
-              <ul class="list-inline d-sm-flex my-0">
-                <!-- <li class="list-inline-item g-mr-20">
-                  <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover text-decoration-none" href="#!">
-                    <i class="fa fa-thumbs-up g-pos-rel g-top-1 g-mr-3"></i>
-                    178
-                  </a>
-                </li>
-                <li class="list-inline-item g-mr-20">
-                  <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover text-decoration-none" href="#!">
-                    <i class="fa fa-thumbs-down g-pos-rel g-top-1 g-mr-3"></i>
-                    34
-                  </a>
-                </li> -->
-                <li class="list-inline-item ml-auto">
-                  <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover text-decoration-none" href="#!">
-                    <i class="fa fa-reply g-pos-rel g-top-1 g-mr-3"></i>
-                    Trả lời
-                  </a>
-                </li>
-              </ul>
-            </div>
-        </div>
-    </div>
-    <!--  -->
-</div>
-</div>
-
-<?php endforeach;?>

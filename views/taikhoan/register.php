@@ -28,6 +28,8 @@
         if(empty($cfpassword)) {
             $error['cfpassword'] = $messageEmpty;
         } else {
+            $password = $_POST['password'];
+            $cfpassword = $_POST['cfpassword'];
             if(strcmp($cfpassword, $password) != 0) $error['cfpassword'] = 'Mật khẩu không trùng khớp';
         }
 

@@ -9,8 +9,7 @@
 
     function getUser($id = 0) {
         $sql = "SELECT `id`, `username` as `tendn`, `password`, `img`, email, `address`, phone, auth FROM taikhoan WHERE `id` = $id";
-        $usertmp = pdo_query($sql);
-        $user = call_user_func_array('array_merge', $usertmp);
+        $user = pdo_query_one($sql);
         return $user;
     }
 

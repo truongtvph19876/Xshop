@@ -43,7 +43,7 @@
                   <span class="count bg-success"></span>
                 </div>
                 <div class="profile-name">
-                  <h5 class="mb-0 font-weight-normal"><?php echo $tendn?></h5>
+                  <h5 class="mb-0 font-weight-normal"><?php echo ucfirst($tendn)?></h5>
                   <span><?php echo $typeAcc = $auth == 1 ? "admin" : ""?></span>
                 </div>
               </div>
@@ -105,20 +105,6 @@
             </a>
             <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
-                <?php 
-                  $listdanhmuc = loadListAll_danhmuc();
-                  $quantity = 0;
-                  foreach ($listdanhmuc as $danhmuc):
-                    $quantity ++;
-                    if($quantity >=4) break;
-                    extract($danhmuc);
-                ?>
-                <li class="nav-item"> <a class="nav-link d-flex align-items-center gap-1" href="#!category"> <i class="mdi mdi-cellphone"></i><span><?php echo $name?></span></a></li>
-                <?php
-                  
-                  endforeach;
-                  unset($quantity, $listdanhmuc);?>
-                  <li class="nav-item"> <a class="nav-link d-flex align-items-center gap-1" href="#!category"> <i class="mdi mdi-dots-horizontal"></i><span></span></a></li>
                   <li class="nav-item"> <a class="nav-link d-flex align-items-center gap-1" href="#!category"> <i class="mdi mdi-circle-edit-outline"></i><span>Quản lí danh mục</span></a></li>
               </ul>
             </div>
@@ -127,7 +113,7 @@
           <li class="nav-item menu-items">
             <a class="nav-link" data-toggle="collapse" href="#product" aria-expanded="false" aria-controls="product">
               <span class="menu-icon">
-                <i class="mdi mdi-view-compact"></i>
+                <i class="mdi mdi-view-compact text-success"></i>
               </span>
               <span class="menu-title">Sản Phẩm</span>
               <i class="menu-arrow"></i>
@@ -221,7 +207,7 @@
                 <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                   <div class="navbar-profile">
                     <img class="img-xs rounded-circle" src="../<?php echo $img?>" alt="">
-                    <p class="mb-0 d-none d-sm-block navbar-profile-name"><?php echo $tendn?></p>
+                    <p class="mb-0 d-none d-sm-block navbar-profile-name"><?php echo ucfirst($tendn)?></p>
                     <i class="mdi mdi-menu-down d-none d-sm-block"></i>
                   </div>
                 </a>

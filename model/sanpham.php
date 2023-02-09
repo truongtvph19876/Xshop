@@ -42,6 +42,14 @@
         return $listsanpham;
     }
 
+    function getProducts() {
+        $sql = "SELECT sp.id, sp.name as tensp, sp.price, sp.soluong, sp.img, sp.mota, sp.luotxem, dm.name as loai, dm.id as iddm
+        FROM sanpham as sp 
+        JOIN danhmuc as dm ON `sp`.`iddm` = `dm`.`id`
+        WHERE 1";
+        $listsanpham = pdo_query($sql);
+        return $listsanpham;
+    }
     function loadListOne_sanpham($id) {
         $sql = "SELECT sp.id, sp.name as tensp, sp.price, sp.soluong, sp.img, sp.mota, sp.luotxem, dm.name as loai, dm.id as iddm
         FROM sanpham as sp 

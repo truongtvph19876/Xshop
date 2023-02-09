@@ -3,12 +3,17 @@ let dots = document.querySelector('.dots');
 
 
 class Slide {
-    constructor(slides,dots, index = 0, time,) {
+    constructor(slides,dots, index = 0,) {
         this.slides = slides;
         this.dots = dots;
         this.index = index;
-        this.time = time;
+
+        let previndex = this.slides.length - 1;
+        let newindex = this.index + 1;
         this.slides[this.index].classList.add("show-slide");
+        this.slides[previndex].classList.add("prev-slide");
+        this.slides[newindex].classList.add("next-slide");
+
         let dothtml ='';
         for (let index = 0; index < this.slides.length; index++) {
             dothtml += '<div class="dot-slide dot"></div>';
@@ -62,6 +67,44 @@ class Slide {
     
 }
 
-let test = new Slide(slides,dots, 0, 4000);
+let mySlides = new Slide(slides,dots, 0,);
 
+let slideInterval;
+let autoSlides = function() {
+    slideInterval = setInterval( e => {
+        mySlides.nextSlide();
+    }, 4000);
+}
+autoSlides();
 
+let prevBtn = document.querySelectorAll(".slide_prev");
+let nextBtn = document.querySelectorAll(".slide_next");
+
+prevBtn.forEach(e => {
+    e.addEventListener("mouseover", e => {
+        clearInterval(slideInterval);
+    });
+
+    e.addEventListener("mouseout", e => {
+        autoSlides();
+    });
+
+    e.addEventListener("click", e => {
+        clearInterval(slideInterval);
+        mySlides.prevSlide();
+    })
+})
+nextBtn.forEach(e => {
+    e.addEventListener("mouseover", e => {
+        clearInterval(slideInterval);
+    });
+    
+    e.addEventListener("mouseout", e => {
+        autoSlides();
+    });
+
+    e.addEventListener("click", e => {
+        clearInterval(slideInterval);
+        mySlides.nextSlide();
+    })
+})

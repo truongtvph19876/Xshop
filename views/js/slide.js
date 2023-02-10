@@ -27,10 +27,6 @@ class Slide {
         this.dots.innerHTML = dothtml;
         this.dots.childNodes[0].classList.add("dot-current")
         
-        this.dots.addEventListener("click", e => {
-            // console.log(Number(e.target.getAttribute("slide-index")));
-            this.moveToSlide(Number(e.target.getAttribute("slide-index")))
-        });
         
     }
 
@@ -100,13 +96,7 @@ let dotBtn = document.querySelectorAll(".dot");
 
 
 prevBtn.forEach(e => {
-    e.addEventListener("mouseover", e => {
-        clearInterval(slideInterval);
-    });
-
-    e.addEventListener("mouseout", e => {
-        autoSlides();
-    });
+    stopSlide(e);
 
     e.addEventListener("click", e => {
         e.preventDefault();
@@ -116,13 +106,7 @@ prevBtn.forEach(e => {
 });
 
 nextBtn.forEach(e => {
-    e.addEventListener("mouseover", e => {
-        clearInterval(slideInterval);
-    });
-    
-    e.addEventListener("mouseout", e => {
-        autoSlides();
-    });
+    stopSlide(e);
 
     e.addEventListener("click", e => {
         e.preventDefault();
@@ -130,3 +114,22 @@ nextBtn.forEach(e => {
         mySlides.nextSlide();
     });
 });
+
+
+dotBtn.forEach(e => {
+    e.addEventListener("click", e => {
+        mySlides.moveToSlide(Number(e.target.getAttribute("slide-index")));
+    });
+
+    stopSlide(e);
+});
+
+function stopSlide(e) {
+    e.addEventListener("mouseover", e => {
+        clearInterval(slideInterval);
+    });
+    
+    e.addEventListener("mouseout", e => {
+        autoSlides();
+    });
+}

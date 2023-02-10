@@ -37,7 +37,7 @@
         $sql .= !empty($key) ? " AND sp.name like '%$key%'" : "";
         $sql .= $iddm > 0 ? " AND iddm = $iddm" : "";
 
-        $sql .= " ORDER BY `sp`.`id` DESC LIMIT 9";
+        $sql .= " ORDER BY `sp`.`id` DESC LIMIT 12";
         $listsanpham = pdo_query($sql);
         return $listsanpham;
     }

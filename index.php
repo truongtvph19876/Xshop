@@ -8,7 +8,7 @@
     include './model/nguoidung.php';
     include './model/binhluan.php';
 
-    $listSanpham = loadSanphamWith(9);
+    $listSanpham = loadSanphamWith(12);
     $listSanphamYeuThich = loadSanphamYeuThich(10);
     $listDanhmuc = loadDanhmucWidth(10);
     $listUsers = getListUsers();

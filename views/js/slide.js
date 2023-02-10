@@ -3,22 +3,34 @@ let dots = document.querySelector('.dots');
 
 
 class Slide {
-    constructor(slides,dots, index = 0,) {
+    /**
+     * @param {slides} slides NodeList of slides
+     * @param {NodeList} dots html parent chứa các dot của slide
+     * @param {number} index index of first slide default 0
+     */
+    constructor(slides,dots, index = 0) {
         this.slides = slides;
         this.dots = dots;
         this.index = index;
 
         let previndex = this.slides.length - 1;
-        let newindex = this.index + 1;
+        let nextindex = this.index + 1;
+
         this.slides[this.index].classList.add("show-slide");
         this.slides[previndex].classList.add("prev-slide");
-        this.slides[newindex].classList.add("next-slide");
+        this.slides[nextindex].classList.add("next-slide");
 
         let dothtml ='';
         for (let index = 0; index < this.slides.length; index++) {
-            dothtml += '<div class="dot-slide dot"></div>';
+            dothtml += '<div slide-index="'+index+'" class="dot-slide dot"></div>';
         }
         this.dots.innerHTML = dothtml;
+        this.dots.childNodes[0].classList.add("dot-current")
+        
+        this.dots.addEventListener("click", e => {
+            // console.log(Number(e.target.getAttribute("slide-index")));
+            this.moveToSlide(Number(e.target.getAttribute("slide-index")))
+        });
         
     }
 
@@ -37,6 +49,11 @@ class Slide {
             currentIndex = this.slides.length - 1;
         }
         this.index = currentIndex;
+        this.changeSlides();
+    }
+
+    moveToSlide(index = 0) {
+        this.index = index;
         this.changeSlides();
     }
     
@@ -77,8 +94,10 @@ let autoSlides = function() {
 }
 autoSlides();
 
-let prevBtn = document.querySelectorAll(".slide_prev");
-let nextBtn = document.querySelectorAll(".slide_next");
+let prevBtn = document.querySelectorAll(".slide_prev_btn");
+let nextBtn = document.querySelectorAll(".slide_next_btn");
+let dotBtn = document.querySelectorAll(".dot");
+
 
 prevBtn.forEach(e => {
     e.addEventListener("mouseover", e => {
@@ -90,10 +109,12 @@ prevBtn.forEach(e => {
     });
 
     e.addEventListener("click", e => {
+        e.preventDefault();
         clearInterval(slideInterval);
         mySlides.prevSlide();
-    })
-})
+    });
+});
+
 nextBtn.forEach(e => {
     e.addEventListener("mouseover", e => {
         clearInterval(slideInterval);
@@ -104,7 +125,8 @@ nextBtn.forEach(e => {
     });
 
     e.addEventListener("click", e => {
+        e.preventDefault();
         clearInterval(slideInterval);
         mySlides.nextSlide();
-    })
-})
+    });
+});

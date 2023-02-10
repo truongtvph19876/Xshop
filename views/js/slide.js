@@ -1,7 +1,3 @@
-let slides = document.querySelectorAll('.slide');
-let dots = document.querySelector('.dots');
-
-
 class Slide {
     /**
      * @param {slides} slides NodeList of slides
@@ -25,9 +21,7 @@ class Slide {
             dothtml += '<div slide-index="'+index+'" class="dot-slide dot"></div>';
         }
         this.dots.innerHTML = dothtml;
-        this.dots.childNodes[0].classList.add("dot-current")
-        
-        
+        this.dots.childNodes[0].classList.add("dot-current")  
     }
 
     nextSlide() {
@@ -76,11 +70,16 @@ class Slide {
         slides[nextIndex].classList.add("next-slide");
         dot[currentIndex].classList.add("dot-current");
     }
-
-    
 }
 
+let slides = document.querySelectorAll('.slide');
+let dots = document.querySelector('.dots');
+
 let mySlides = new Slide(slides,dots, 0,);
+
+let prevBtn = document.querySelectorAll(".slide_prev_btn");
+let nextBtn = document.querySelectorAll(".slide_next_btn");
+let dotBtn = document.querySelectorAll(".dot");
 
 let slideInterval;
 let autoSlides = function() {
@@ -89,11 +88,6 @@ let autoSlides = function() {
     }, 4000);
 }
 autoSlides();
-
-let prevBtn = document.querySelectorAll(".slide_prev_btn");
-let nextBtn = document.querySelectorAll(".slide_next_btn");
-let dotBtn = document.querySelectorAll(".dot");
-
 
 prevBtn.forEach(e => {
     stopSlide(e);
@@ -115,7 +109,6 @@ nextBtn.forEach(e => {
     });
 });
 
-
 dotBtn.forEach(e => {
     e.addEventListener("click", e => {
         mySlides.moveToSlide(Number(e.target.getAttribute("slide-index")));
@@ -125,11 +118,7 @@ dotBtn.forEach(e => {
 });
 
 function stopSlide(e) {
-    e.addEventListener("mouseover", e => {
-        clearInterval(slideInterval);
-    });
+    e.addEventListener("mouseover", e => clearInterval(slideInterval));
     
-    e.addEventListener("mouseout", e => {
-        autoSlides();
-    });
+    e.addEventListener("mouseout", e => autoSlides());
 }

@@ -12,6 +12,7 @@
     $listSanphamYeuThich = loadSanphamYeuThich(10);
     $listDanhmuc = loadDanhmucWidth(10);
     $listUsers = getListUsers();
+    
     if (isset($_GET['act']) && $_GET['act']){
         $act = $_GET['act'];
 

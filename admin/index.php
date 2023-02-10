@@ -5,11 +5,9 @@
     include '../model/sanpham.php';
     include '../model/nguoidung.php';
     include '../model/binhluan.php';
-    //controller
-    
-    $listUsers = getListUsers();
     require_once 'header.php';
-    
+    //controller
+
     if (isset($_GET['act'])) {
         $act = $_GET['act'];
         switch ($act) {
@@ -108,5 +106,5 @@
         require_once 'home.php';
     }
 
-    require_once 'footer.php';
+    require_once '../views/footer.php';
 ?>

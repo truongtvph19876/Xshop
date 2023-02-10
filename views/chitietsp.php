@@ -120,32 +120,33 @@
                             document.querySelector(".comments").innerHTML = data;
                             // thêm sự kiện onclick cho tất cả nút bấm viết bình luận, phản hồi bình luận
                             document.querySelectorAll(".rep-btn").forEach(e => {
-                            e.onclick = event => {
-                            event.preventDefault();
-                            if (document.querySelector("div[data-comment-id='" + e.getAttribute("data-comment-id") + "']").style.display == 'none') {
-                                document.querySelector("div[data-comment-id='" + e.getAttribute("data-comment-id") + "']").style.display = 'block';
-                                document.querySelector("div[data-comment-id='" + e.getAttribute("data-comment-id") + "'] textarea[name='content']").focus();
-                            } else {
-                                document.querySelector("div[data-comment-id='" + e.getAttribute("data-comment-id") + "']").style.display = 'none';
+                                e.onclick = event => {
+                                    event.preventDefault();
+                                    if (document.querySelector("div[data-comment-id='" + e.getAttribute("data-comment-id") + "']").style.display == 'none') {
+                                        document.querySelector("div[data-comment-id='" + e.getAttribute("data-comment-id") + "']").style.display = 'block';
+                                        document.querySelector("div[data-comment-id='" + e.getAttribute("data-comment-id") + "'] textarea[name='content']").focus();
+                                    } else {
+                                        document.querySelector("div[data-comment-id='" + e.getAttribute("data-comment-id") + "']").style.display = 'none';
+                                    }
+                                };
                             }
-                        };
-                        });
+                        );
                         document.querySelectorAll(".comments .write_comment form").forEach(element => {
                             element.onsubmit = event => {
-                            event.preventDefault();
-                            fetch("./views/binhluan/binhluan.php?page_id=" + comments_page_id, {
-                                method: 'POST',
-                                body: new FormData(element)
-                            })
-                            .then(response => response.text())
-                            .then(data => {
-                                element.parentElement.innerHTML = data;
-                                loadComments();
+                                event.preventDefault();
+                                fetch("./views/binhluan/binhluan.php?page_id=" + comments_page_id, {
+                                    method: 'POST',
+                                    body: new FormData(element)
+                                })
+                                .then(response => response.text())
+                                .then(data => {
+                                    element.parentElement.innerHTML = data;
+                                    loadComments();
+                                });
+                                };
                             });
-                            };
                         });
-                    });
-                }
+                    }
                 loadComments();
             </script>
         </div>

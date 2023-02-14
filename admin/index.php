@@ -1,5 +1,8 @@
 <?php 
-
+    session_start();
+    if (empty($_SESSION['idUser'] && $_SESSION['username'])) {
+        header('Location:../index.php');
+    }
     include '../model/pdo.php';
     include '../model/danhmuc.php';
     include '../model/sanpham.php';

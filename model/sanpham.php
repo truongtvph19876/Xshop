@@ -62,9 +62,11 @@
 
     function increaseViews($id = 0) {
         $sql = $id > 0 
+        
         ? "UPDATE sanpham 
             SET `luotxem` = `luotxem` + 1
-            WHERE id = $id" : "";
+            WHERE id = $id" 
+        : "";
         
         pdo_execute($sql);
     }

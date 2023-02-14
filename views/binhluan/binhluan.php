@@ -78,13 +78,13 @@ function show_comments($comments, $parent_id = -1) {
                   <ul class="list-inline d-sm-flex my-0">
                                         
                     <li class="list-inline-item ml-auto w-100">
-                        <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover text-decoration-none d-flex align-items-baseline gap-1 rep-btn" href="#!" data-comment-id="'.$comment['id'].'">
+                        <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover text-decoration-none d-flex align-items-baseline gap-1 rep-btn" href="#!" parent-id="'.$comment['id'].'">
                           <i class="fa fa-reply g-pos-rel g-top-1 g-mr-3"></i>
                           <p class="text-nowrap">Trả lời</p>
                         </a>
                         <!-- Form write comment -->
                         
-                        ' . show_write_comment_form($comment['id']) . '
+                        ' . comment_form($comment['id']) . '
                         <!-- end form  -->
                     </li>
                     </ul>
@@ -104,11 +104,11 @@ function show_comments($comments, $parent_id = -1) {
   return $html;
 }
 
-// This function is the template for the write comment form
-function show_write_comment_form($parent_id = -1, $display = 'none') {
+// hiển thị form comment
+function comment_form($parent_id = -1, $display = 'none') {
 
   $html = '
-  <div class="write_comment" data-comment-id="'.$parent_id.'" style="display:'.$display.'">
+  <div class="write_comment" parent-id="'.$parent_id.'" style="display:'.$display.'">
       <form class="align-items-start" method="post">
           <input name="parent_id" type="hidden" value="'.$parent_id.'">
           <textarea class="form-control w-100" rows="3"  name="content" placeholder="Write your comment here..." required></textarea>
@@ -119,10 +119,11 @@ function show_write_comment_form($parent_id = -1, $display = 'none') {
   return $html;
 }
 
-// Page ID needs to exist, this is used to determine which comments are for which page
+// select sản phẩm theo id sản phẩm
   $pdo =pdo_get_connection();
-    $stmt = $pdo->prepare('SELECT * FROM binhluan WHERE idpro = ? ORDER BY ngaybinhluan DESC');
-    $stmt->execute([ $_GET['page_id'] ]);
+    $idSanPham = $_GET['idSanPham'];
+    $stmt = $pdo->prepare('SELECT * FROM binhluan WHERE idpro = '.$idSanPham.' ORDER BY ngaybinhluan DESC');
+    $stmt->execute();
     $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
@@ -130,7 +131,7 @@ function show_write_comment_form($parent_id = -1, $display = 'none') {
        $parent_id = $_POST['parent_id'];
        $userId = $_SESSION['idUser'];
        $content = $_POST['content'];
-       $prodId  = $_GET['page_id'];
+       $prodId  = $_GET['idSanPham'];
        $today = date("Y-m-d H:i:s");
 
       $sql = "INSERT INTO binhluan (`id_parent`, `noidung`, `iduser`, `idpro`, `ngaybinhluan`) VALUES
@@ -145,7 +146,7 @@ function show_write_comment_form($parent_id = -1, $display = 'none') {
 
 <?php 
 if (isset($_SESSION['username'])) {
-  echo show_write_comment_form(-1,'block');
+  echo comment_form(-1,'block');
 } else {
   echo 'Vui lòng đăng nhập để bình luận';
 }

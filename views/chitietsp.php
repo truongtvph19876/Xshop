@@ -109,11 +109,11 @@
 
                 </div>
                 <script>
-                    const comments_page_id = <?=$_GET['id']?>; // This number should be unique on every page
+                    const idSanPham = <?=$_GET['id']?>; // lấy id sản phẩm
                     function loadComments() {
                         // nạp trang comments vào trang sản phẩm
-                        fetch("./views/binhluan/binhluan.php?page_id=" + comments_page_id)
-                        // nhập dữ liệu trang comment đc nạp vào
+                        fetch("./views/binhluan/binhluan.php?idSanPham=" + idSanPham)
+                        
                         .then(response => response.text())
                         .then(data => {
                             // innerHTML tất cả dữ liệu đc nạp vào element có class là comments
@@ -122,19 +122,20 @@
                             document.querySelectorAll(".rep-btn").forEach(e => {
                                 e.onclick = event => {
                                     event.preventDefault();
-                                    if (document.querySelector("div[data-comment-id='" + e.getAttribute("data-comment-id") + "']").style.display == 'none') {
-                                        document.querySelector("div[data-comment-id='" + e.getAttribute("data-comment-id") + "']").style.display = 'block';
-                                        document.querySelector("div[data-comment-id='" + e.getAttribute("data-comment-id") + "'] textarea[name='content']").focus();
+                                    if (document.querySelector("div[parent-id='" + e.getAttribute("parent-id") + "']").style.display == 'none') {
+                                        document.querySelector("div[parent-id='" + e.getAttribute("parent-id") + "']").style.display = 'block';
+                                        document.querySelector("div[parent-id='" + e.getAttribute("parent-id") + "'] textarea[name='content']").focus();
                                     } else {
-                                        document.querySelector("div[data-comment-id='" + e.getAttribute("data-comment-id") + "']").style.display = 'none';
+                                        document.querySelector("div[parent-id='" + e.getAttribute("parent-id") + "']").style.display = 'none';
                                     }
                                 };
                             }
                         );
-                        document.querySelectorAll(".comments .write_comment form").forEach(element => {
+                        // thêm sự kiện submit cho các 
+                        document.querySelectorAll("form").forEach(element => {
                             element.onsubmit = event => {
                                 event.preventDefault();
-                                fetch("./views/binhluan/binhluan.php?page_id=" + comments_page_id, {
+                                fetch("./views/binhluan/binhluan.php?idSanPham=" + idSanPham, {
                                     method: 'POST',
                                     body: new FormData(element)
                                 })

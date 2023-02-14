@@ -3,27 +3,24 @@
         $username = $_POST['username'];
         $emailpost = $_POST['email'];
         $getpassword = '';
-        $listUsers = checkEmail($emailpost);
         $error = [];
         $message = '';
+
+        $listUsers = checkEmail($emailpost);
         foreach($listUsers as $user) {
             extract($user);
 
-            if(strcmp($username, $tendn) == 0 && strcmp($email, $emailpost) ==0) {
-                unset($error['quenmk']);
+            if(strcmp($username, $tendn) == 0 && strcmp($email, $emailpost) == 0) {
                 $getpassword = $password;
+                $message = 'Mật khẩu của bạn là: <b>'.$getpassword.'</b>';
                 break;
-            } else {
-                $error['quenmk'] = 'Tài khoản hoặc email không đúng';
             }
-
         }
 
-        if(empty($error['quenmk'])) {
-
-            $message = 'Mật khẩu của bạn là: <b>'.$getpassword.'</b>';
-        } 
-        
+        if ($getpassword == '') {
+            $error['quenmk'] = 'Tài khoản hoặc email không đúng';
+        }
+           
     }
 ?>
 

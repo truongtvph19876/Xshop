@@ -46,7 +46,7 @@
             
             
             case 'dangxuat':
-                unset($_SESSION['isUser']);
+                unset($_SESSION['idUser']);
                 unset($_SESSION['username']);
                 require_once './views/home.php';
                 break;

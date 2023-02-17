@@ -79,8 +79,9 @@ li {
 
 .right-content .top {
     border-bottom: 1px solid #ccc;
-    background-color: #ccc;
+    background-color: #ebe8e8;
     padding: 5px;
+    text-align: center;
 }
 
 form {

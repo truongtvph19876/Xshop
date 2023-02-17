@@ -4,12 +4,24 @@
 
     if (isset($_POST['capnhat'])) {
         $tenloai = $_POST['tenloai'];
-        $sql = "UPDATE danhmuc 
+        $tenhang = $_POST['tenhang'];
+        $error = [];
+        if (empty($tenloai)) {
+            $error['loai'] = "Trường này không được để trống";
+        }
+        if (empty($tenhang)) {
+            $error['hang'] = "Trường này không được để trống";
+        }
+
+        if (empty($error)) {
+            $sql = "UPDATE danhmuc 
                 SET
-                `name` = '$tenloai'
+                `name` = '$tenhang',
+                `loaidm` = '$tenloai'
                 WHERE `id` = $id";
-        pdo_execute($sql);
-        header("Location:index.php?act=listdm");
+            pdo_execute($sql);
+            header("Location:index.php?act=listdm");
+        }
     }
 ?>
 
@@ -23,11 +35,17 @@
                 <label class="form-label">Mã Loại</label>
                 <input type="text" name="id"  class="form-control" value="<?php echo $id?>" placeholder="" disabled>
             </div>
-            <div class="mb-3">
-                <label class="form-label">Tên Loại</label>
-                <input type="text" name="tenloai" class="form-control" value="<?php echo $name = !empty($name)? $name : ""?>" placeholder="Nhập tên loại">
+            <div class="row">
+                <div class="col">
+                    <label class="form-label">Loại</label>
+                    <input type="text" name="tenloai" class="form-control" value="<?php echo $loaidm = !empty($loaidm)? $loaidm : ""?>" placeholder="Nhập tên loại">
+                </div>
+                <div class="col">
+                    <label class="form-label">Tên Hãng</label>
+                    <input type="text" name="tenhang" class="form-control" value="<?php echo $name = !empty($name)? $name : ""?>" placeholder="Nhập tên loại">
+                </div>
             </div>
-            <div class="row mb10">
+            <div class="row mb10 mt-3">
                 <div>
                 <input class="btn btn-primary" type="submit" name="capnhat" value="Cập nhật">
                 <input class="btn btn-danger" type="reset" value="Nhập Lại">

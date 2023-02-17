@@ -36,7 +36,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <td>Chọn</td>
+            <td><input type="checkbox"></td>
             <td>ID</td>
             <td>Nội dung</td>
             <td>Người bình luận</td>
@@ -51,7 +51,7 @@
          foreach ($listComments as $comment):
             extract($comment);
             $idCm = $id;
-            $suaComment = "index.php?act=updatecm&id=$id";
+            // $suaComment = "index.php?act=updatecm&id=$id";
             $xoaComment = "index.php?act=deletecm&id=$id";
             $xemComment = "../index.php?act=chitietsp&id=$idpro";
             $user = getUser($iduser);
@@ -69,9 +69,9 @@
             <td ><?php echo $tensp?> - id: <b><?php echo $idpro?></b></td>
             <td><?php echo $ngaybinhluan?></td>
             <td>
-                <a href="<?php echo $suaComment?>" class="btn btn-success ">Sửa</a>
+                
                 <a href="<?php echo $xoaComment?>" class="btn btn-danger" onclick="return confirm('Xác nhận xóa')">Xóa</a>
-                <a href="<?php echo $xemComment?>" class="btn btn-info w-75">Xem</a>
+                <a href="<?php echo $xemComment?>" class="btn btn-info">Xem</a>
             </td>
         </tr>
         <?php endforeach?>

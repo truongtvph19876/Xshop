@@ -1,5 +1,9 @@
 <!-- CONTENT -->
-
+<?php 
+    $id = isset($_GET['iddm']) && $_GET['iddm'] > 0 ? $_GET['iddm'] : 0;
+    $keyword = isset($_POST['keyword']) && !empty($_POST['keyword']) ? $_POST['keyword'] : '';
+    $listSanpham = loadListAll_sanpham($keyword, $id);
+?>
 <main class="container mx-auto row g-2">
             <!-- left content -->
             <div class="left-content col-9">

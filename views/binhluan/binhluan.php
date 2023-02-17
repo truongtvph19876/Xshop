@@ -12,12 +12,9 @@ session_start();
   include $_SERVER['DOCUMENT_ROOT'] . '/DuAnMau/model/nguoidung.php';
   include $_SERVER['DOCUMENT_ROOT'] . '/DuAnMau/model/sanpham.php';
 
-  // Below function will convert datetime to time elapsed string
-function handleCommentTime($from, $to = null) {
+  // Xử lí thời gian bình luận
+function handleCommentTime($from) {
     $result = '';
-    if(isset($to)) {
-
-    } else {
       $from = new DateTime($from);
       $to = new DateTime(date("Y-m-d H:i:s"));
       
@@ -38,21 +35,21 @@ function handleCommentTime($from, $to = null) {
           }
         }
     }
-
-    }
-
+    
     return $result;
 }
 
-// This function will populate the comments and comments replies using a loop
+
+
+// hiển thị bình luạn và trả lời bình luận
 function show_comments($comments, $parent_id = -1) {
   $html = '';
 
   if ($parent_id != -1) {
-      // If the comments are replies sort them by the "submit_date" column
+      // sắp xếp trả lời bình luận theo ngày bình luận
       array_multisort(array_column($comments, 'ngaybinhluan'), SORT_ASC, $comments);
   }
-  // Iterate the comments using the foreach loop
+  // lặp tất cả bình luận và trả lời bình luận theo id Sản Phẩm
   foreach ($comments as $comment) {
       if ($comment['id_parent'] == $parent_id) {
           // tính toán thời gian bình luạna
@@ -60,14 +57,14 @@ function show_comments($comments, $parent_id = -1) {
           //lấy thông tin người dùng và sản phẩm từ id
           $user = getUser($comment['iduser']);
           $imgUser = $user['img'];
-          // Add the comment to the $html variable
+          // tạo html comment và rep comment
           $html .= '
           <div class="row w-100 mt-3 comment border-0 m-0 p-0">
         <!--  -->
         <div class="col-12 g-bg-secondary  border-top border-primary p-0">
             <div class="media g-mb-30 media-comment d-flex pl-2">
-                <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15d" src="'.$imgUser.'" alt="Image Description">
-                <div class="media-body w-100" style="padding-left:40px">
+                <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15d mx-1" src="'.$imgUser.'" alt="Image Description">
+                <div class="media-body w-100" style="padding-left:20px">
                   <div class="g-mb-15">
                     <h5 class="h5 g-color-gray-dark-v1 mb-0">'.$user['tendn'].'</h5>
                     <span class="g-color-gray-dark-v4 g-font-size-12">'.$commentTime.'</span>
@@ -111,8 +108,8 @@ function comment_form($parent_id = -1, $display = 'none') {
   <div class="write_comment" parent-id="'.$parent_id.'" style="display:'.$display.'">
       <form class="align-items-start" method="post">
           <input name="parent_id" type="hidden" value="'.$parent_id.'">
-          <textarea class="form-control w-100" rows="3"  name="content" placeholder="Write your comment here..." required></textarea>
-          <button class="btn btn-primary mt-1" type="submit">Gui</button>
+          <textarea class="form-control w-100" rows="3"  name="content" placeholder="Viết đánh giá cho sản phẩm này..." required></textarea>
+          <button class="btn btn-primary mt-1" type="submit">Gửi</button>
       </form>
   </div>
   ';

@@ -2,9 +2,13 @@
 $error = [];
 if (isset($_POST['themmoi']) && $_POST['themmoi']){
     $tenloai = $_POST['tenloai'];
+    $tenhang = $_POST['tenhang'];
     $error = [];
     if (empty($tenloai)) {
         $error['loai'] = "Trường này không được để trống";
+    }
+    if (empty($tenhang)) {
+        $error['hang'] = "Trường này không được để trống";
     }
     foreach ($listdanhmuc as $danhmuc) {
         extract($danhmuc);
@@ -13,7 +17,7 @@ if (isset($_POST['themmoi']) && $_POST['themmoi']){
         }
     }
     if (empty($error)) {
-        insert_danhmuc($tenloai);
+        insert_danhmuc($tenloai, $tenhang);
         $thongbao = "Thêm mới thành công";
     }
     
@@ -30,13 +34,22 @@ if (isset($_POST['themmoi']) && $_POST['themmoi']){
                 <label class="form-label">Mã Loại</label>
                 <input type="text"  class="form-control" value="" placeholder="Mã loại" disabled>
             </div>
-            <div class="mb-3">
-                <label class="form-label">Tên Loại</label>
+            <div class="row">
+            <div class="col">
+                <label class="form-label">Loại</label>
                 <input type="text" name="tenloai" class="form-control" placeholder="Nhập tên loại">
                 <span class="text-danger"><?php echo $message = isset($error['loai']) && !empty($error['loai']) ? $error['loai'] : ""?></span>
                 <span class="text-success"><?php echo $message = isset($thongbao) && !empty($thongbao) ? $thongbao : ""?></span>
             </div>
-            <div class="row mb10">
+            <div class="col">
+                <label class="form-label">Tên Hãng</label>
+                <input type="text" name="tenhang" class="form-control" placeholder="Nhập tên hãng">
+                <span class="text-danger"><?php echo $message = isset($error['hang']) && !empty($error['hang']) ? $error['hang'] : ""?></span>
+                <span class="text-success"><?php echo $message = isset($thongbao) && !empty($thongbao) ? $thongbao : ""?></span>
+            </div>
+            </div>
+            
+            <div class="row mb10 mt-3">
                 <div>
                 <input class="btn btn-primary" type="submit" name="themmoi" value="Thêm mới">
                 <input class="btn btn-danger" type="reset" value="Nhập Lại">

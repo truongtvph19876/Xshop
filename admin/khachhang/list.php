@@ -33,7 +33,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <td>Chọn</td>
+            <td><input type="checkbox"></td>
             <td>ID</td>
             <td>Username</td>
             <td>Password</td>
@@ -54,9 +54,9 @@
             $xoaUser = "index.php?act=deletekh&id=$id";
             $loai = $auth == 1 ? "Admin" : "User";
             if (is_file('../'. $img)) {
-                $image = "<img src='../$img' width='100px' height='50px' alt=''>";
+                $image = "<img class='rounded-circle' src='../$img' width='50px' height='50px' alt=''>";
             } else {
-                $image ="<img src='../uploads/customer/images.png' width='100px' height='50px' alt=''>";
+                $image ="<img class='' src='../uploads/customer/images.png' width='100px' height='50px' alt=''>";
             }
             
         ?>

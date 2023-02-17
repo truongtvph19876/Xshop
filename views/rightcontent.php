@@ -7,7 +7,7 @@
                         <?php 
                             foreach($listDanhmuc as $danhmuc):
                                 extract($danhmuc);
-                                $chitietDanhmuc = 'index.php?act=sanpham&id='.$id.'';
+                                $chitietDanhmuc = 'index.php?act=sanpham&iddm='.$id.'';
                         ?>
                             <a href="<?php echo $chitietDanhmuc?>" class="list-group-item"><li class="list-style-none"><?php echo $name?></li></a>
                         <?php endforeach;?>

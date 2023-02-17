@@ -48,7 +48,7 @@ $idUser = 0;
         <div class="form-group">
             <label for="">Mật khẩu</label>
             <input type="password" name="passwordlg">
-            <span class="text-danger">'.$message.'</span>
+            <span class="text-danger fs-6">'.$message.'</span>
         </div>
         <div class="form-group">
             <input type="checkbox" name="" id="">
@@ -64,7 +64,7 @@ $idUser = 0;
         $user = getUser($UID);
         extract($user);
         $admin = $auth;
-        $quantri = $admin == 1 ? '<a href="admin/index.php" class="card-link">Quản trị</a>' : "";
+        $quantri = $admin == 1 ? '<a href="admin/index.php" class="card-link btn btn-success text-nowrap mx-0 mt-2"><i class="fa-solid fa-screwdriver-wrench"></i> Quản trị</a>' : "";
         $img = empty($img) ? $defaultImg : $img;
         echo '
         <div class="card" style="">
@@ -73,12 +73,14 @@ $idUser = 0;
     <img class="rounded-circle" src="'.$img.'" alt="" class="card-title" width="100px">
     <h6 class="card-subtitle mb-2 text-muted">'.$tendn.'</h6>
     </div>
-    <p class="card-text">Email: <i>'.$email.'</i></p>
-    <p class="card-text">Phone: <i>'.$phone.'</i></p>
-    <p class="card-text">Address: <i>'.$address.'</i></p>
-    <a href="index.php?act=capnhattaikhoan&user='.$id.'" class="card-link">Cập nhật</a>
-    <a href="index.php?act=dangxuat" class="card-link">Đăng xuất</a>
+    <p class="card-text"><i class="fa-solid fa-envelope"></i> Email: <i>'.$email.'</i></p>
+    <p class="card-text"><i class="fa-solid fa-phone"></i> Phone: <i>'.$phone.'</i></p>
+    <p class="card-text"><i class="fa-solid fa-location-dot"></i> Address: <i>'.$address.'</i></p>
+    <div class="d-flex flex-wrap">
+    <a href="index.php?act=capnhattaikhoan&user='.$id.'" class="card-link btn btn-primary text-nowrap"><i class="fa-solid fa-pen-to-square"></i> Cập nhật</a>
+    <a href="index.php?act=dangxuat" class="card-link btn btn-danger text-nowrap"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
     '.$quantri.'
+    </div>
   </div>
 </div>
         ';

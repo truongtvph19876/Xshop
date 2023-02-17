@@ -34,7 +34,7 @@
             <!-- search -->
             <form action="index.php?act=sanpham" method="post" class="col-5">
                 <div class="search">
-                    <input name="keyword" placeholder="Tim kiem">
+                    <input name="keyword" placeholder="Tìm kiếm">
                     <button type="submit">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </button>

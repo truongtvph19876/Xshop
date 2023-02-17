@@ -82,6 +82,7 @@
             <div class="row g-0">
 
                 <?php 
+
                     foreach($sanphamLienQuan as $sanpham):
                         extract($sanpham);
                             if($idSPLQ == $id) 

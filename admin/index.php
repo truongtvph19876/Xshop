@@ -8,9 +8,9 @@
     include '../model/sanpham.php';
     include '../model/nguoidung.php';
     include '../model/binhluan.php';
-    require_once 'header.php';
     //controller
-
+    $admin = getUser($_SESSION['idUser']);
+    require_once 'header.php';
     if (isset($_GET['act'])) {
         $act = $_GET['act'];
         switch ($act) {
@@ -109,5 +109,5 @@
         require_once 'home.php';
     }
 
-    require_once '../views/footer.php';
+    require_once 'footer.php';
 ?>

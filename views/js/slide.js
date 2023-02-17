@@ -8,6 +8,7 @@ class Slide {
         this.slides = slides;
         this.dots = dots;
         this.index = index;
+        this.startX = null;
 
         let previndex = this.slides.length - 1;
         let nextindex = this.index + 1;
@@ -21,7 +22,31 @@ class Slide {
             dothtml += '<div slide-index="'+index+'" class="dot-slide dot"></div>';
         }
         this.dots.innerHTML = dothtml;
-        this.dots.childNodes[0].classList.add("dot-current")  
+        this.dots.childNodes[0].classList.add("dot-current");
+
+        this.slides.forEach((slide) => {
+            slide.addEventListener('touchstart', (event) => {
+                this.startX = event.touches[0].clientX;
+                log
+            });
+
+            slide.addEventListener('touchmove', (event) => {
+                if (this.startX === null) {
+                    return;
+                }
+
+                let currentX = event.touches[0].clientX;
+                let diff = currentX - this.startX;
+
+                if (diff > 0) {
+                    this.prevSlide();
+                } else if (diff < 0) {
+                    this.nextSlide();
+                }
+
+                this.startX = null;
+            });
+        });
     }
 
     nextSlide() {
@@ -71,6 +96,7 @@ class Slide {
         dot[currentIndex].classList.add("dot-current");
     }
 }
+
 
 let slides = document.querySelectorAll('.slide');
 let dots = document.querySelector('.dots');

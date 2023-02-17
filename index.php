@@ -19,14 +19,10 @@
         switch ($act) {
             case 'sanpham':
                 
-                $id = isset($_GET['id']) && $_GET['id'] > 0 ? $_GET['id'] : 0;
-                $keyword = isset($_POST['keyword']) && !empty($_POST['keyword']) ? $_POST['keyword'] : '';
-                $listSanpham = loadListAll_sanpham($keyword, $id);
                 include './views/sanpham.php';
                 break;
             case 'chitietsp':
-                $id = $_GET['id'];
-                $sanpham = loadListOne_sanpham($id);
+                $sanpham = loadListOne_sanpham($_GET['id']);
                 extract($sanpham);
                 $idSPLQ = $id;
                 $sanphamLienQuan = loadListAll_sanpham('', $iddm);

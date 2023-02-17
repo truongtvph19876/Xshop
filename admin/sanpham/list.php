@@ -35,16 +35,16 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <td>Chọn</td>
-            <td>Mã Sản Phẩm</td>
+            <td><input type="checkbox"></td>
+            <td>ID</td>
             <td>Tên Sản Phẩm</td>
-            <td>Giá Sản Phẩm</td>
-            <td>Số lượng</td>
+            <td>Giá</td>
+            <td class="text-nowrap">Số lượng</td>
             <td>Ảnh Sản Phẩm</td>
             <td>Mô Tả Sản Phẩm</td>
-            <td>Lượt xem</td>
-            <td>Loại Sản Phẩm</td>
-            <td colspan="2"><a href="index.php?act=addsp" class="btn btn-info">Nhap them</a></td>
+            <td class="text-nowrap">Lượt xem</td>
+            <td>Hãng</td>
+            <td colspan="2"><a href="index.php?act=addsp" class="btn btn-info text-nowrap">Nhập thêm</a></td>
         </tr>
     </thead>
     <tbody>
@@ -54,7 +54,7 @@
             $suadm = "index.php?act=updatesp&id=$id";
             $xoadm = "index.php?act=deletesp&id=$id";
             if (is_file($img)) {
-                $image = "<img src='$img' width='200px' height='100px' alt=''>";
+                $image = "<img src='$img' width='150px' height='150px' alt=''>";
             } else {
                 $image ="<img src='' width='200px' height='100px' alt='Không tìm thấy ảnh'>";
             }
@@ -71,14 +71,14 @@
             <td><?php echo $luotxem?></td>
             <td><?php echo $loai?></td>
             <td>
-                <a href="<?php echo $suadm?>" class="btn btn-success">Sua</a>
-                <a href="<?php echo $xoadm?>" class="btn btn-danger" onclick="return confirm('Xac nhan xoa')">Xoa</a>
+                <a href="<?php echo $suadm?>" class="btn btn-success w-100 mt-2">Sửa</a>
+                <a href="<?php echo $xoadm?>" class="btn btn-danger w-100 mt-2" onclick="return confirm('Xac nhan xoa')">Xóa</a>
             </td>
         </tr>
         <?php endforeach?>
     </tbody>
 
 </table>
-<a href="#!" class="btn btn-info">Chon tat ca</a>
-<a href="#!" class="btn btn-info">Bo Chon tat ca</a>
-<a href="#!" class="btn btn-info">Xoa cac muc da chon</a>
+<a href="#!" class="btn btn-info">Chọn tất cả</a>
+<a href="#!" class="btn btn-info">Bỏ chọn tất cả</a>
+<a href="#!" class="btn btn-info">Xóa các mục đã chọn</a>

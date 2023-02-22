@@ -45,7 +45,7 @@ if (isset($_POST['ap_dung'])) {
     }
   }
   updatMultipleSlides($newArr);
-  // header("location: index.php");
+  header("location: index.php");
 }
 
 if (isset($_POST['them_slide'])) {

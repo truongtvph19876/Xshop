@@ -35,9 +35,9 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <td><input type="checkbox"></td>
+            <td><input type="checkbox" id="all-checkbox"></td>
             <td>ID</td>
-            <td>Tên Sản Phẩm</td>
+            <td class="text-nowrap">Tên Sản Phẩm</td>
             <td>Giá</td>
             <td class="text-nowrap">Số lượng</td>
             <td>Ảnh Sản Phẩm</td>

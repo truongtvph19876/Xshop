@@ -1,52 +1,36 @@
-var citis = document.getElementById("city");
-let idcitis = citis.querySelector("#idcistis");
 
-var districts = document.getElementById("district");
-let iddistricts = districts.querySelector("#iddistricts");
+// chọn tất cả checkbox
+let checkboxes = document.querySelectorAll('input[type="checkbox"]');
+let allCheckbox = document.getElementById('all-checkbox');
 
-var wards = document.getElementById("ward");
-let idwards = wards.querySelector("#idwards");
+allCheckbox.addEventListener('change', () => {
 
-let url = "./views/js/db.json";
-let promise = fetch(url);
+  checkboxes.forEach(element => {
+    element.checked = allCheckbox.checked;
+  });
+});
 
-promise.then(response => 
-  response.json().then(data => ({
-      data: data,
-  })
-  ).then(res => {
-  // console.log(res.data);
-  renderCity(res.data);
-}));
+checkboxes.forEach(element => {
+  element.addEventListener('change', () => {
 
-function renderCity(data) {
-  for (const x of data) {
-    citis.options[citis.options.length] = new Option(x.Name, x.Id);
-    
-  }
-  // xứ lý khi thay đổi tỉnh thành thì sẽ hiển thị ra quận huyện thuộc tỉnh thành đó
-  citis.onchange = function () {
-    districts.length = 1;
-    wards.length = 1;
-   
-    if(this.value != ""){
-      const result = data.filter(n => n.Id === this.value);
+    // trường hợp 1 checkbox bỏ check -> xóa checked tại all-checkbox
+    if (allCheckbox.checked && !element.checked) {
+      allCheckbox.checked = false;
+    }
 
-      for (const k of result[0].Districts) {
-        districts.options[districts.options.length] = new Option(k.Name, k.Id);
+    // trường hợp tất cả checkbox đc check -> checked tại all-checkbox
+    let isChecked = true;
+    for (let index = 0; index < checkboxes.length; index++) {
+      if (index == 0) continue;
+
+      if (!checkboxes[index].checked) {
+        isChecked = false;
+        break;
       }
     }
-  };
-   // xứ lý khi thay đổi quận huyện thì sẽ hiển thị ra phường xã thuộc quận huyện đó
-  districts.onchange = function () {
-    wards.length = 1;
-    const dataCity = data.filter((n) => n.Id === citis.value);
-    if (this.value != "") {
-      const dataWards = dataCity[0].Districts.filter(n => n.Id === this.value)[0].Wards;
+    allCheckbox.checked = isChecked;
 
-      for (const w of dataWards) {
-        wards.options[wards.options.length] = new Option(w.Name, w.Id);
-      }
-    }
-  };
-}
+  });
+});
+
+// Quản lí slide

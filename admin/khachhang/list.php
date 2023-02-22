@@ -33,7 +33,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <td><input type="checkbox"></td>
+            <td><input type="checkbox" id="all-checkbox"></td>
             <td>ID</td>
             <td>Username</td>
             <td>Password</td>
@@ -56,7 +56,7 @@
             if (is_file('../'. $img)) {
                 $image = "<img class='rounded-circle' src='../$img' width='50px' height='50px' alt=''>";
             } else {
-                $image ="<img class='' src='../uploads/customer/images.png' width='100px' height='50px' alt=''>";
+                $image ="<img class='rounded-circle' src='../uploads/customer/images.png' width='100px' height='50px' alt=''>";
             }
             
         ?>
@@ -64,7 +64,12 @@
             <td><input type="checkbox" name="<?php echo $id?>"></td>
             <td><?php echo $id?></td>
             <td><?php echo $tendn?></td>
-            <td><?php echo $password?></td>
+            <td class="field-password">
+                <input type="password" value="<?php echo $password?>" size="5" class="bg-transparent border-0 outline-0 w-25">
+                <span class="pointer">
+                <i class="fa-solid fa-eye"></i>
+                </span>
+            </td>
             <td><?php echo $image?></td>
             <td><?php echo $email?></td>
             <td><?php echo $address?></td>
@@ -82,3 +87,21 @@
 <a href="#!" class="btn btn-info">Chọn tất cả</a>
 <a href="#!" class="btn btn-info">Bỏ chọn tất cả</a>
 <a href="#!" class="btn btn-info">Xóa các mục đã chọn</a>
+
+<script>
+    let field_password = document.querySelectorAll('.field-password');
+    field_password.forEach((field)=> {
+        field.addEventListener('click', ()=> {
+            let input = field.querySelector("input[type]");
+            let show = field.querySelector("span");
+
+            if(input.type == 'password'){
+                input.type = 'text';
+                show.innerHTML = "<i class='fa-solid fa-eye-slash'></i>";
+            } else {
+                input.type = 'password';
+                show.innerHTML = "<i class='fa-solid fa-eye'></i>";
+            }
+        });
+    });
+</script>

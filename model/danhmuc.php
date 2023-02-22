@@ -1,6 +1,6 @@
 <?php 
-    function insert_danhmuc($tenloai, $tenhang) {
-        $sql = "INSERT INTO danhmuc(`name`, `loaidm`) VALUES ('$tenloai', '$tenhang')";
+    function insert_danhmuc($tenhang) {
+        $sql = "INSERT INTO danhmuc(`name`) VALUES ('$tenhang')";
         pdo_execute($sql);
     }
 

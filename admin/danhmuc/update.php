@@ -3,12 +3,9 @@
     if (is_array($danhmuc)) extract($danhmuc);
 
     if (isset($_POST['capnhat'])) {
-        $tenloai = $_POST['tenloai'];
         $tenhang = $_POST['tenhang'];
         $error = [];
-        if (empty($tenloai)) {
-            $error['loai'] = "Trường này không được để trống";
-        }
+
         if (empty($tenhang)) {
             $error['hang'] = "Trường này không được để trống";
         }
@@ -16,8 +13,7 @@
         if (empty($error)) {
             $sql = "UPDATE danhmuc 
                 SET
-                `name` = '$tenhang',
-                `loaidm` = '$tenloai'
+                `name` = '$tenhang'
                 WHERE `id` = $id";
             pdo_execute($sql);
             header("Location:index.php?act=listdm");
@@ -36,10 +32,6 @@
                 <input type="text" name="id"  class="form-control" value="<?php echo $id?>" placeholder="" disabled>
             </div>
             <div class="row">
-                <div class="col">
-                    <label class="form-label">Loại</label>
-                    <input type="text" name="tenloai" class="form-control" value="<?php echo $loaidm = !empty($loaidm)? $loaidm : ""?>" placeholder="Nhập tên loại">
-                </div>
                 <div class="col">
                     <label class="form-label">Tên Hãng</label>
                     <input type="text" name="tenhang" class="form-control" value="<?php echo $name = !empty($name)? $name : ""?>" placeholder="Nhập tên loại">

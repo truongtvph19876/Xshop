@@ -14,35 +14,34 @@ session_start();
 
   // Xử lí thời gian bình luận
 function handleCommentTime($from) {
-    $result = '';
-      $from = new DateTime($from);
-      $to = new DateTime(date("Y-m-d H:i:s"));
+  $result = '';
+  $from = new DateTime($from);
+  $to = new DateTime(date("Y-m-d H:i:s"));
       
-      if ($from->diff($to) === null) {
-        echo "Không thể chuyển DateInterval object thành array";
-    } else {
-        $arraytmp = get_object_vars($from->diff($to));
-        $array = array_slice($arraytmp, 0, 6);
-        $string = ['năm', 'tháng', 'ngày', 'giờ', 'phút', 'giây'];
-        $newArray = array_combine($string, $array);
+  if ($from->diff($to) === null) {
+    echo "Không thể chuyển DateInterval object thành array";
+  } else {
+    $arraytmp = get_object_vars($from->diff($to));
+    $array = array_slice($arraytmp, 0, 6);
+    $string = ['năm', 'tháng', 'ngày', 'giờ', 'phút', 'giây'];
+    $newArray = array_combine($string, $array);
 
-        foreach ($newArray as $key => $val) {
-          if($val > 0) {
-            $result = $val . ' ' . $key;
-            break;
-          } else {
-            $result = 'Vừa xong';
-          }
-        }
+    foreach ($newArray as $key => $val) {
+      if($val > 0) {
+        $result = $val . ' ' . $key;
+        break;
+      } else {
+        $result = 'Vừa xong';
+      }
     }
-    
+
+  }
     return $result;
 }
 
 
-
 // hiển thị bình luạn và trả lời bình luận
-function show_comments($comments, $parent_id = -1) {
+function showComments($comments, $parent_id = -1) {
   $html = '';
 
   if ($parent_id != -1) {
@@ -57,7 +56,7 @@ function show_comments($comments, $parent_id = -1) {
           //lấy thông tin người dùng và sản phẩm từ id
           $user = getUser($comment['iduser']);
           $imgUser = $user['img'];
-          // tạo html comment và rep comment
+          // tạo html comment và rep comment theo cấu trúc dạng cây
           $html .= '
           <div class="row w-100 mt-3 comment border-0 m-0 p-0">
         <!--  -->
@@ -69,9 +68,7 @@ function show_comments($comments, $parent_id = -1) {
                     <h5 class="h5 g-color-gray-dark-v1 mb-0">'.$user['tendn'].'</h5>
                     <span class="g-color-gray-dark-v4 g-font-size-12">'.$commentTime.'</span>
                   </div>
-            
                   <p>'.$comment['noidung'].'</p>
-            
                   <ul class="list-inline d-sm-flex my-0">
                                         
                     <li class="list-inline-item ml-auto w-100">
@@ -80,15 +77,13 @@ function show_comments($comments, $parent_id = -1) {
                           <p class="text-nowrap">Trả lời</p>
                         </a>
                         <!-- Form write comment -->
-                        
-                        ' . comment_form($comment['id']) . '
+                        ' . commentForm($comment['id']) . '
                         <!-- end form  -->
                     </li>
                     </ul>
                     <!-- subcomment -->
-                    ' . show_comments($comments, $comment['id']) . '
+                    ' . showComments($comments, $comment['id']) . '
                     <!--  -->
-                        
                   </ul>
                 </div>
             </div>
@@ -102,7 +97,7 @@ function show_comments($comments, $parent_id = -1) {
 }
 
 // hiển thị form comment
-function comment_form($parent_id = -1, $display = 'none') {
+function commentForm($parent_id = -1, $display = 'none') {
 
   $html = '
   <div class="write_comment" parent-id="'.$parent_id.'" style="display:'.$display.'">
@@ -117,7 +112,7 @@ function comment_form($parent_id = -1, $display = 'none') {
 }
 
 // select sản phẩm theo id sản phẩm
-  $pdo =pdo_get_connection();
+  $pdo = pdo_get_connection();
     $idSanPham = $_GET['idSanPham'];
     $stmt = $pdo->prepare('SELECT * FROM binhluan WHERE idpro = '.$idSanPham.' ORDER BY ngaybinhluan DESC');
     $stmt->execute();
@@ -129,10 +124,10 @@ function comment_form($parent_id = -1, $display = 'none') {
        $userId = $_SESSION['idUser'];
        $content = $_POST['content'];
        $prodId  = $_GET['idSanPham'];
-       $today = date("Y-m-d H:i:s");
+       $now = date("Y-m-d H:i:s");
 
       $sql = "INSERT INTO binhluan (`id_parent`, `noidung`, `iduser`, `idpro`, `ngaybinhluan`) VALUES
-      ('$parent_id', '$content','$userId', '$prodId', '$today')";
+      ('$parent_id', '$content','$userId', '$prodId', '$now')";
       pdo_query($sql);
 
     }
@@ -143,11 +138,11 @@ function comment_form($parent_id = -1, $display = 'none') {
 
 <?php 
 if (isset($_SESSION['username'])) {
-  echo comment_form(-1,'block');
+  echo commentForm(-1,'block');
 } else {
   echo 'Vui lòng đăng nhập để bình luận';
 }
 ?>
 
-<?php echo show_comments($comments)?>
+<?php echo showComments($comments)?>
 

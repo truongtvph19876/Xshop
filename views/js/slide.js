@@ -8,7 +8,6 @@ class Slide {
         this.slides = slides;
         this.dots = dots;
         this.index = index;
-        this.startX = null;
 
         let previndex = this.slides.length - 1;
         let nextindex = this.index + 1;
@@ -24,29 +23,6 @@ class Slide {
         this.dots.innerHTML = dothtml;
         this.dots.childNodes[0].classList.add("dot-current");
 
-        this.slides.forEach((slide) => {
-            slide.addEventListener('touchstart', (event) => {
-                this.startX = event.touches[0].clientX;
-                log
-            });
-
-            slide.addEventListener('touchmove', (event) => {
-                if (this.startX === null) {
-                    return;
-                }
-
-                let currentX = event.touches[0].clientX;
-                let diff = currentX - this.startX;
-
-                if (diff > 0) {
-                    this.prevSlide();
-                } else if (diff < 0) {
-                    this.nextSlide();
-                }
-
-                this.startX = null;
-            });
-        });
     }
 
     nextSlide() {
@@ -57,7 +33,7 @@ class Slide {
         this.index = currentIndex;
         this.changeSlides();
     }
-    
+
     prevSlide() {
         let currentIndex = this.index - 1;
         if (currentIndex < 0) {
@@ -71,7 +47,7 @@ class Slide {
         this.index = index;
         this.changeSlides();
     }
-    
+
     changeSlides() {
         let slides = this.slides;
         let currentIndex = this.index;
@@ -79,17 +55,17 @@ class Slide {
         let nextIndex = currentIndex + 1;
         let slideLength = this.slides.length;
         let dot = document.querySelectorAll(".dot");
-        
+
         for (let i = 0; i < slideLength; i++) {
             slides[i].classList.remove("show-slide");
             slides[i].classList.remove("prev-slide");
             slides[i].classList.remove("next-slide");
             dot[i].classList.remove("dot-current");
         }
-        
+
         prevIndex = prevIndex < 0 ? slideLength - 1 : prevIndex;
-        nextIndex = nextIndex >= slideLength ? 0 : nextIndex; 
-        
+        nextIndex = nextIndex >= slideLength ? 0 : nextIndex;
+
         slides[currentIndex].classList.add("show-slide");
         slides[prevIndex].classList.add("prev-slide");
         slides[nextIndex].classList.add("next-slide");
@@ -101,7 +77,7 @@ class Slide {
 let slides = document.querySelectorAll('.slide');
 let dots = document.querySelector('.dots');
 
-let mySlides = new Slide(slides,dots, 0,);
+let mySlides = new Slide(slides,dots);
 
 let prevBtn = document.querySelectorAll(".slide_prev_btn");
 let nextBtn = document.querySelectorAll(".slide_next_btn");

@@ -45,14 +45,9 @@
             }
         }
 
-        if (empty($soluong)) {
-            $error['soluong'] = "Truong nay khong duoc de trong";
-        } else {
-            if (!is_numeric($soluong)) {
-                $error['soluong'] = "vui lòng nhập số";
-            } else if($soluong <= 0) {
-                $error['soluong'] = "Số lượng phải lớn hơn 0";
-            }
+        
+        if (!is_numeric($soluong)) {
+            $error['soluong'] = "vui lòng nhập số";
         }
         
         // if (empty($mota)) {

@@ -1,23 +1,20 @@
 <?php 
 $error = [];
 if (isset($_POST['themmoi']) && $_POST['themmoi']){
-    $tenloai = $_POST['tenloai'];
     $tenhang = $_POST['tenhang'];
     $error = [];
-    if (empty($tenloai)) {
-        $error['loai'] = "Trường này không được để trống";
-    }
+
     if (empty($tenhang)) {
         $error['hang'] = "Trường này không được để trống";
     }
     foreach ($listdanhmuc as $danhmuc) {
         extract($danhmuc);
-        if (!strcasecmp($tenloai, $name)) {
+        if (!strcasecmp($tenhang, $name)) {
             $error['loai'] = "Danh mục này đã tồn tại";
         }
     }
     if (empty($error)) {
-        insert_danhmuc($tenloai, $tenhang);
+        insert_danhmuc($tenhang);
         $thongbao = "Thêm mới thành công";
     }
     
@@ -36,15 +33,9 @@ if (isset($_POST['themmoi']) && $_POST['themmoi']){
             </div>
             <div class="row">
             <div class="col">
-                <label class="form-label">Loại</label>
-                <input type="text" name="tenloai" class="form-control" placeholder="Nhập tên loại">
+                <label class="form-label">Hãng sản phẩm</label>
+                <input type="text" name="tenhang" class="form-control" placeholder="Nhập tên loại">
                 <span class="text-danger"><?php echo $message = isset($error['loai']) && !empty($error['loai']) ? $error['loai'] : ""?></span>
-                <span class="text-success"><?php echo $message = isset($thongbao) && !empty($thongbao) ? $thongbao : ""?></span>
-            </div>
-            <div class="col">
-                <label class="form-label">Tên Hãng</label>
-                <input type="text" name="tenhang" class="form-control" placeholder="Nhập tên hãng">
-                <span class="text-danger"><?php echo $message = isset($error['hang']) && !empty($error['hang']) ? $error['hang'] : ""?></span>
                 <span class="text-success"><?php echo $message = isset($thongbao) && !empty($thongbao) ? $thongbao : ""?></span>
             </div>
             </div>

@@ -36,7 +36,7 @@
             $image = $img;
         } else {
             $image .= $_FILES['img']['name'];
-            move_uploaded_file($_FILES['img']['tmp_name'], $image);
+            move_uploaded_file($_FILES['img']['tmp_name'], '../' . $image);
         }
 
         if(empty($error)){

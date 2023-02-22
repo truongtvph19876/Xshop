@@ -8,8 +8,10 @@
     include '../model/sanpham.php';
     include '../model/nguoidung.php';
     include '../model/binhluan.php';
+    include '../model/slideshow.php';
     //controller
     $admin = getUser($_SESSION['idUser']);
+
     require_once 'header.php';
     if (isset($_GET['act'])) {
         $act = $_GET['act'];
@@ -99,6 +101,10 @@
                 $id = $_GET['id'];
                 
                 include 'binhluan/updatecm.php';
+                break;
+            case 'thongke':
+                
+                include 'thongke/list.php';
                 break;
 
             default:

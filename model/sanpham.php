@@ -29,7 +29,7 @@
         return $listsanpham;
     }
     
-    function loadListAll_sanpham($key, $iddm) {
+    function loadListAll_sanpham($key = '', $iddm = 0) {
         $sql = "SELECT sp.id, sp.name as tensp, sp.price, sp.soluong, sp.img, sp.mota, sp.luotxem, dm.name as loai, dm.id as iddm
         FROM sanpham as sp 
         JOIN danhmuc as dm ON `sp`.`iddm` = `dm`.`id`

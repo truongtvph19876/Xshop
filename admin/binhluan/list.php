@@ -36,12 +36,12 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <td><input type="checkbox"></td>
+            <td><input type="checkbox" id="all-checkbox"></td>
             <td>ID</td>
             <td>Nội dung</td>
-            <td>Người bình luận</td>
+            <td class="text-nowrap">Người bình luận</td>
             <td>Sản phẩm bình luận</td>
-            <td>Ngày bình luận</td>
+            <td>Thời gian</td>
             
         </tr>
     </thead>
@@ -70,8 +70,8 @@
             <td><?php echo $ngaybinhluan?></td>
             <td>
                 
-                <a href="<?php echo $xoaComment?>" class="btn btn-danger" onclick="return confirm('Xác nhận xóa')">Xóa</a>
-                <a href="<?php echo $xemComment?>" class="btn btn-info">Xem</a>
+                <a href="<?php echo $xoaComment?>" class="btn btn-danger w-100 mt-1" onclick="return confirm('Xác nhận xóa')">Xóa</a>
+                <a href="<?php echo $xemComment?>" class="btn btn-info w-100 mt-1">Xem</a>
             </td>
         </tr>
         <?php endforeach?>

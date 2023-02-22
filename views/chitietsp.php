@@ -24,7 +24,7 @@
                         </nav>
                         <div class="product_name"><?php echo $tensp?></div>
                         <div class="product-rating"><span class="rating-review"><?php echo $luotxem?> Lượt xem</span></div>
-                        <div> <span class="product_price"><?php echo $price - 1?> $</span> <strike class="product_discount"> <span style='color:black'><?php echo $price?> $<span> </strike> </div>
+                        <div> <span class="product_price"><?php echo number_format($price, 0, 0, ',')?> <span class="text-danger fs-4 fst-italic">đ</span></span> <strike class="product_discount"> <span style='color:black'><?php echo number_format($price, 0, 0, ',')?> đ<span> </strike> </div>
                         <hr class="singleline">
                         <div><span class="product_info">Bảo hành: 6 tháng<span><br> <span class="product_info">7 ngày 1 đổi 1<span><br><span class="product_info">Trạng thái: <?php echo $status = $soluong > 0 ? "<span class='text-success'>Còn hàng</span>" : "<span class='text-danger'>Hết hàng</span>" ?><span> </div>
                         <div>
@@ -92,12 +92,12 @@
                         
                 ?>
                 <!-- sp -->
-                <a href="<?php echo $chitiet?>" class="col-3 card text-decoration-none text-dark ">
-                    <img src="<?php echo $img?>" class="card-img-top" width="300px" height="200px" alt="...">
+                <a href="<?php echo $chitiet?>" class="col-cs card text-decoration-none text-dark ">
+                    <img src="<?php echo $img?>" class="card-img-top my-2" width="200px" height="250px" alt="...">
                     <div class="card-body d-flex flex-column justify-content-between">
                         <h5 class="card-title truncate"><?php echo $tensp?></h5>
                         <p class="card-text overflow-hidden text-black-50 truncate"><?php echo $mota?></p>
-                        <p class="card-text text-danger flex-self-end"><?php echo $price?> $</p>
+                        <p class="card-text text-danger flex-self-end"><?php echo number_format($price, 0, 0, ',')?> đ</p>
                     </div>
                 </a>
 

@@ -39,23 +39,16 @@ footer {
                             $stt = 0;
                             foreach($listDanhmuc as $item) :
                                 if ($stt == 5) break;
+                                $chitietDanhmuc = 'index.php?act=sanpham&iddm='.$item['id'].'';
                                 $stt++;
                         ?>
-                        <li><a href="#"><?=$item['name']?></a></li>
+                        <li><a href="<?php echo $chitietDanhmuc?>"><?=$item['name']?></a></li>
                         <?php 
                         
                         endforeach;?>
                     </ul>
                 </div>
-                <div class="col-lg-2 col-md-6">
-                    <h5 class="text-white text-nowrap mb-3">Sản Phẩm nổi bật</h5>
-                    <ul class="list-unstyled text-muted">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Get started</a></li>
-                        <li><a href="#">FAQ</a></li>
-                    </ul>
-                </div>
+                
                 <div class="col-lg-4 col-md-6">
                     <h5 class="text-white mb-3">Nhận thông báo từ chúng tôi</h5>
                     <p class="small text-muted">Chúng tôi sẽ thông báo tới bạn khi có sản phẩm mới nhất</p>

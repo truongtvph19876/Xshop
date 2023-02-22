@@ -64,7 +64,7 @@
                     <div class="card-body">
                         <h5 class="card-title"><?php echo $tensp?></h5>
                         <p class="card-text overflow-hidden text-black-50 truncate"><?php echo $mota?></p>
-                        <p class="card-text text-danger"><?php echo $price?> $</p>
+                        <p class="card-text text-danger fw-bold"><?php echo number_format($price, 0, '', ',')?> đ</p>
                     </div>
                 </a>
 

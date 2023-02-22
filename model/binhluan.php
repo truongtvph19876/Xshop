@@ -25,7 +25,7 @@
 
         $sql .= $loai == 2 ? " JOIN taikhoan ON  binhluan.iduser = taikhoan.id WHERE username LIKE '%$keyword%'" : "";
         
-        $sql .= $loai== 3 || $loai == 0 ?  " WHERE noidung LIKE '%$keyword%'" : "";
+        $sql .= $loai == 3 || $loai == 0 ?  " WHERE noidung LIKE '%$keyword%'" : "";
         
         $sql .= $loai == 4 ? " JOIN sanpham ON  binhluan.idpro = sanpham.id WHERE name LIKE '%$keyword%'" : "";
         

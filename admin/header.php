@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="../views/css/style.css">
     <link rel="stylesheet" href="../views/css/index.css">
     <link rel="stylesheet" href="../views/fontawesome-free-6.2.1-web/css/all.min.css">
+
 </head>
 <body>
   <div class="container">

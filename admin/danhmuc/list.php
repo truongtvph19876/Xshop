@@ -1,9 +1,8 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <td><input type="checkbox"></td>
+            <td><input type="checkbox" id="all-checkbox"></td>
             <td>Mã Loại</td>
-            <td>Loại</td>
             <td>Tên Hãng</td>
             <td colspan="2"><a href="index.php?act=adddm" class="btn btn-info">Nhập thêm</a></td>
             
@@ -19,7 +18,6 @@
         <tr>
             <td class=""><input type="checkbox" name="<?php echo $id?>"></td>
             <td><?php echo $id?></td>
-            <td><?php echo $loaidm?></td>
             <td><?php echo $name?></td>
             <td>
                 <a href="<?php echo $suadm?>" class="btn btn-success">Sửa</a>

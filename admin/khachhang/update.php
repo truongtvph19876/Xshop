@@ -28,7 +28,7 @@
         }
 
         if(empty($addr) || !empty($city) || !empty($district) || !empty($ward)){
-            $addr = !empty($city) ? '-'.$city : '';
+            $addr = !empty($city) ? $city : '';
             $addr .= !empty($district) ? '-'.$district : '';
             $addr .= !empty($ward) ? '-'.$ward : '';
         }

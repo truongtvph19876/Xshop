@@ -1,13 +1,46 @@
 <?php 
-
+    
     $keyword = '';
-    $idUser = 0;
-    if (isset($_POST['locbinhluan'])) {
+    if (isset($_POST['keyword']) && $_POST['keyword']) {
         $keyword = $_POST['keyword'];
-        $loai = $_POST['loai'];
-        
-        $listComments = searchComments($keyword, $loai);
+    } else {
+        $keyword = isset($_GET['k']) ? $_GET['k'] : '';
     }
+
+    $loai = 0;
+    if (isset($_POST['loai']) && $_POST['loai']) {
+        $loai = $_POST['loai'];
+    } else {
+        $loai = isset($_GET['loai']) ? $_GET['loai'] : '';
+    }
+
+    
+    $listComments = searchComments($keyword, $loai);
+    
+    $default_page = 1;
+    $per_page = 5;
+    $numberOfPage = 0;
+    $countComment = count($listComments);
+
+    if ($countComment % $per_page > 0) {
+        $numberOfPage = ceil($countComment /  $per_page);
+    } else {
+        $numberOfPage = $countComment / $per_page;
+    }
+    
+    
+    $page_btn = '';
+    for ($i=0; $i < $numberOfPage; $i++) { 
+        $page = $i + 1;
+        $page_btn .= "<a href='index.php?act=dsbl&page=$page&loai=$loai&k=$keyword' class='btn btn-primary'>$page</a>";
+    }
+
+        $pages = isset($_GET['page']) ? $_GET['page'] : $default_page;
+        $limit = $per_page;
+        $offset = $pages > 1 ? $pages * $per_page - $per_page : 0;
+        
+        $listComments = searchComments($keyword, $loai, $limit, $offset);
+
 ?>
 
 <form action="index.php?act=dsbl" method="post">
@@ -50,23 +83,21 @@
         $image = '';
          foreach ($listComments as $comment):
             extract($comment);
-            $idCm = $id;
+
             // $suaComment = "index.php?act=updatecm&id=$id";
-            $xoaComment = "index.php?act=deletecm&id=$id";
+            $xoaComment = "index.php?act=deletecm&id=$idbl";
             $xemComment = "../index.php?act=chitietsp&id=$idpro";
             $user = getUser($iduser);
-            extract($user);
             $sanpham = loadListOne_sanpham($idpro);
-            extract($sanpham);
             
             
         ?>
         <tr>
-            <td><input type="checkbox" name="<?php echo $id?>"></td>
-            <td><?php echo $idCm?></td>
+            <td><input type="checkbox" data="1" name="<?php echo $idbl?>"></td>
+            <td><?php echo $idbl?></td>
             <td><?php echo $noidung?></td>
-            <td><?php echo $tendn?></td>
-            <td ><?php echo $tensp?> - id: <b><?php echo $idpro?></b></td>
+            <td><?php echo $user['tendn']?></td>
+            <td ><?php echo $sanpham['tensp']?> - id: <b><?php echo $idpro?></b></td>
             <td><?php echo $ngaybinhluan?></td>
             <td>
                 
@@ -74,10 +105,17 @@
                 <a href="<?php echo $xemComment?>" class="btn btn-info w-100 mt-1">Xem</a>
             </td>
         </tr>
-        <?php endforeach?>
+        <?php 
+        endforeach?>
     </tbody>
-
+    
 </table>
+<!-- page -->
+<div class="d-flex gap-2 justify-content-center">
+    <?php 
+        echo $page_btn;
+    ?>
+</div>
 <a href="#!" class="btn btn-info">Chọn tất cả</a>
 <a href="#!" class="btn btn-info">Bỏ chọn tất cả</a>
 <a href="#!" class="btn btn-info">Xóa các mục đã chọn</a>

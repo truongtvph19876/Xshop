@@ -20,7 +20,15 @@
         $listsanpham = pdo_query($sql);
         return $listsanpham;
     }
+    
+    function loadSanphamKichHoat($number = 0) {
+        $sql = "SELECT sp.id, sp.name, sp.price, sp.img, sp.mota FROM sanpham as sp  WHERE kich_hoat = 1";
+        $sql .= " ORDER BY sp.id DESC";
+        $sql .= $number > 0 ? " LIMIT $number" : " LIMIT 12";
 
+        $listsanpham = pdo_query($sql);
+        return $listsanpham;
+    }
     function loadSanphamYeuThich($number) {
         $sql = "SELECT * FROM sanpham as sp 
         ORDER BY sp.luotxem DESC
@@ -29,22 +37,23 @@
         return $listsanpham;
     }
     
-    function loadListAll_sanpham($key = '', $iddm = 0) {
-        $sql = "SELECT sp.id, sp.name as tensp, sp.price, sp.soluong, sp.img, sp.mota, sp.luotxem, dm.name as loai, dm.id as iddm
+    function loadListAll_sanpham($key = '', $iddm = 0, $limit = -1, $offset = -1, $kichhoat = -1) {
+        $sql = "SELECT sp.id, sp.name as tensp, sp.price, sp.soluong, sp.img, sp.mota, sp.luotxem, sp.kich_hoat, dm.name as loai, dm.id as iddm
         FROM sanpham as sp 
         JOIN danhmuc as dm ON `sp`.`iddm` = `dm`.`id`
         WHERE 1";
         
         $sql .= !empty($key) ? " AND sp.name like '%$key%'" : "";
         $sql .= $iddm > 0 ? " AND iddm = $iddm" : "";
+        $sql .= $kichhoat >= 0 ? " AND kich_hoat = $kichhoat" : "";
 
-        $sql .= " ORDER BY `sp`.`id` DESC LIMIT 12";
+        $sql .= $limit > 0 ? " LIMIT " . $limit . " OFFSET " . $offset : "";
         $listsanpham = pdo_query($sql);
         return $listsanpham;
     }
 
     function getProducts() {
-        $sql = "SELECT sp.id, sp.name as tensp, sp.price, sp.soluong, sp.img, sp.mota, sp.luotxem, dm.name as loai, dm.id as iddm
+        $sql = "SELECT sp.id, sp.name as tensp, sp.price, sp.soluong, sp.img, sp.mota, sp.luotxem, sp.kich_hoat, dm.name as loai, dm.id as iddm
         FROM sanpham as sp 
         JOIN danhmuc as dm ON `sp`.`iddm` = `dm`.`id`
         WHERE 1";

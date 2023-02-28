@@ -1,8 +1,9 @@
 <?php 
-    function getListUsers($id = 0, $keyword = '') {
+    function getListUsers($id = 0, $keyword = '', $limit = -1, $offset = -1) {
         $sql = "SELECT `id`, `username` as `tendn`, `password`, `img`, email, `address`, phone, auth FROM taikhoan WHERE 1";
         $sql .= $id > 0 ? " AND `auth` ='$id'" : '';
         $sql .= !empty($keyword) ? " AND `username` like '%$keyword%'" : '';
+        $sql .= $limit > 0 ? " LIMIT " . $limit . " OFFSET " . $offset : "";
         $listUser = pdo_query($sql);
         return $listUser;
     }

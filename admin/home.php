@@ -44,6 +44,10 @@ if (isset($_POST['ap_dung'])) {
       $newArr[$tmp[0]] [$tmp[1]] = $value;
     }
   }
+  // echo '<pre>';
+  // print_r($newArr);
+  // echo '</pre>';
+
   updatMultipleSlides($newArr);
   header("location: index.php");
 }
@@ -68,6 +72,58 @@ if (isset($_POST['them_slide'])) {
     insertSlide($target, $info);
     header("location: index.php");
   }
+}
+
+// de xuat san pham
+if (isset($_POST['san_pham_de_xuat'])) {
+  // kiểm tra các sản phẩm có yêu cầu kích hoạt
+  foreach ($_POST as $key => $value) {
+    if (is_numeric($key)) {
+      $sql = "UPDATE sanpham SET 
+          `kich_hoat` = 1
+          WHERE `id` = '$key'";
+          // echo $sql;
+          pdo_execute($sql);
+    }
+  }
+
+}
+// xoa de xuat san pham
+if (isset($_POST['xoa_de_xuat'])) {
+
+  // echo '<pre>';
+  // print_r($_POST);
+  // echo '</pre>';
+  $boxSanpham = [];
+  $boxSanphamChecked = [];
+
+  foreach ($_POST as $key => $value) {
+    // lấy ra các sản phẩm được check
+    if (is_numeric($key)) {
+      $boxSanphamChecked[$key] = $value;
+    } else {
+      // Lấy ra các sản phẩm được hiển thị
+      $array = explode('-', $key);
+      $k = $array[0];
+      $v = isset($array[1]) ? $array[1] : '';
+      $boxSanpham[$v] = $k;
+    }
+
+  }
+
+  // so sánh các sản phẩm hiển thị và các sản phẩm được check
+  foreach ($boxSanpham as $key => $value) {
+    
+    // kiểm tra các trường không được check(chỉ kiểm tra các trường có id sản phẩm)
+    if (!isset($boxSanphamChecked[$key]) && is_numeric($key)) {
+        $sql = "UPDATE sanpham SET 
+          `kich_hoat` = 0
+          WHERE `id` = '$key'";
+          // echo $sql;
+          pdo_execute($sql);
+    }
+  }
+  
 }
 
 ?>
@@ -214,12 +270,169 @@ if (isset($_POST['them_slide'])) {
     </div>
   </div>
   
+            
+  <?php
+  // Load các sản phẩm được kích hoạt
+    $listSanPham = loadListAll_sanpham('', 0, -1, -1, 1);
+    $default_page = 1;
+    $per_page = 4;
+    $numberOfPage = 0;
+    $countProd = count($listSanPham);
+       
+    if ($countProd % $per_page > 0) {
+        $numberOfPage = ceil($countProd /  $per_page);
+    } else {
+        $numberOfPage = $countProd / $per_page;
+    }
+    
+    
+    $page_btn = '';
+    for ($i=0; $i < $numberOfPage; $i++) { 
+        $page = $i + 1;
+        $page_btn .= "<a href='index.php?page_kichhoat=$page' class='btn btn-primary'>$page</a>";
+    }
+       
+        $pages = isset($_GET['page_kichhoat']) ? $_GET['page_kichhoat'] : $default_page;
+        $limit = $per_page;
+        $offset = $pages > 1 ? $pages * $per_page - $per_page : 0;
+        
+        $listSanPham = loadListAll_sanpham('', 0, $limit, $offset, 1);
+  ?>
   <hr>
   <!-- Sản phẩm đề xuất -->
   <h1 class="">Sản phẩm đề xuất</h1>
+  <hr>
   <div>
+    <h3>Sản phẩm đang được hiển thị</h3>
+    <span class="text-danger"></span>
+    <hr>
     <form action="" method="post">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+              <td><input type="checkbox" checked id="all-checkbox"></td>
+              <td>ID</td>
+              <td class="text-nowrap">Tên Sản Phẩm</td>
+              <td>Giá</td>
+              <td class="text-nowrap">Số lượng</td>
+              <td>Ảnh Sản Phẩm</td>
+              <td>Mô Tả Sản Phẩm</td>
+              <td class="text-nowrap">Lượt xem</td>
+              <td>Hãng</td>
+          </tr>
+        </thead>
+          <tbody>
+          <?php
+            
+           foreach ($listSanPham as $sanpham):
 
+              extract($sanpham);
+              if (is_file($img)) {
+                  $image = "<img src='$img' width='120px' height='120px' alt=''>";
+              } else {
+                  $image ="<img src='' width='120px' height='120px' alt='Không tìm thấy ảnh'>";
+              }
+          ?>
+          <tr>
+              <td><input type="checkbox" data="1" checked name="<?php echo $id?>"></td>
+              <input type="hidden" name="sp-<?php echo $id?>">
+              <td><?php echo $id?></td>
+              <td><?php echo $tensp?></td>
+              <td><?php echo $price?></td>
+              <td><?php echo $soluong?></td>
+              <td><?php echo $image?></td>
+              <td><div style="height: 95px; overflow:hidden;"><?php echo $mota?></div></td>
+
+              <td><?php echo $luotxem?></td>
+              <td><?php echo $loai?></td>
+          </tr>
+          <?php endforeach?>
+          </tbody>
+        </table>
+        <button class="btn btn-primary mt-1" name="xoa_de_xuat">Áp dụng</button>
+      <div class="d-flex gap-2 justify-content-center">
+        <?php 
+            echo $page_btn;
+        ?>
+      </div>
+      </form>
+            
+      <hr>
+      <form action="" method="post">
+      <h3>Sản phẩm khác</h3>
+      <hr>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+              <td><input type="checkbox" id="all-checkbox-2"></td>
+              <td>ID</td>
+              <td class="text-nowrap">Tên Sản Phẩm</td>
+              <td>Giá</td>
+              <td class="text-nowrap">Số lượng</td>
+              <td>Ảnh Sản Phẩm</td>
+              <td>Mô Tả Sản Phẩm</td>
+              <td class="text-nowrap">Lượt xem</td>
+              <td>Hãng</td>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+
+// load các sản phẩm không được kích hoạt
+          $listSanPham = loadListAll_sanpham('', 0, -1, -1, 0);
+          $default_page = 1;
+          $per_page = 4;
+          $numberOfPage = 0;
+          $countProd = count($listSanPham);
+
+          if ($countProd % $per_page > 0) {
+              $numberOfPage = ceil($countProd /  $per_page);
+          } else {
+              $numberOfPage = $countProd / $per_page;
+          }
+
+
+          $page_btn = '';
+          for ($i=0; $i < $numberOfPage; $i++) { 
+              $page = $i + 1;
+              $page_btn .= "<a href='index.php?page_khongkichhoat=$page' class='btn btn-primary'>$page</a>";
+          }
+       
+          $pages = isset($_GET['page_khongkichhoat']) ? $_GET['page_khongkichhoat'] : $default_page;
+          $limit = $per_page;
+          $offset = $pages > 1 ? $pages * $per_page - $per_page : 0;
+        
+          $listSanPham = loadListAll_sanpham('', 0, $limit, $offset, 0);
+           foreach ($listSanPham as $sanpham):
+              extract($sanpham);
+              if ($kich_hoat == 1) continue;
+              if (is_file($img)) {
+                  $image = "<img src='$img' width='120px' height='120px' alt=''>";
+              } else {
+                  $image ="<img src='' width='120px' height='120px' alt='Không tìm thấy ảnh'>";
+              }
+          ?>
+          <tr>
+              <td><input type="checkbox" data="2" name="<?php echo $id?>"></td>
+              <td><?php echo $id?></td>
+              <td><?php echo $tensp?></td>
+              <td><?php echo $price?></td>
+              <td><?php echo $soluong?></td>
+              <td><?php echo $image?></td>
+              <td><div style="height: 95px; overflow:hidden;"><?php echo $mota?></div></td>
+
+              <td><?php echo $luotxem?></td>
+              <td><?php echo $loai?></td>
+          </tr>
+          <?php endforeach?>
+          </tbody>
+      </table>
+      <div class="d-flex gap-2 justify-content-center">
+        <?php 
+            echo $page_btn;
+        ?>
+      </div>
+      <button class="btn btn-primary mt-1" name="san_pham_de_xuat">Áp dụng</button>
     </form>
   </div>
 </div>
@@ -227,10 +440,11 @@ if (isset($_POST['them_slide'])) {
 <script>
   document.querySelectorAll(".info-btn").forEach(element => {
     element.addEventListener("click", () => {
-      if (document.querySelector("textarea[name=" + element.getAttribute("data") + "]").style.display == "none") {
-        document.querySelector("textarea[name=" + element.getAttribute("data") + "]").style.display = "block";
+      let textarea = document.querySelector("textarea[name=" + element.getAttribute("data") + "]");
+      if (textarea.style.display == "none") {
+        textarea.style.display = "block";
       } else {
-        document.querySelector("textarea[name=" + element.getAttribute("data") + "]").style.display = "none";
+        textarea.style.display = "none";
       }
     })
   });

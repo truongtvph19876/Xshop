@@ -1,22 +1,53 @@
 <?php 
 
     $keyword = '';
-    $iddm = 0;
-    if (isset($_POST['loc'])) {
+    if (isset($_POST['keyword']) && $_POST['keyword']) {
         $keyword = $_POST['keyword'];
-        $iddm = $_POST['iddm'];
+    } else {
+        $keyword = isset($_GET['k']) ? $_GET['k'] : '';
     }
-    $listSanPham = loadListAll_sanpham($keyword, $iddm);
+
+    $loai = 0;
+    if (isset($_POST['loai']) && $_POST['loai']) {
+        $loai = $_POST['loai'];
+    } else {
+        $loai = isset($_GET['loai']) ? $_GET['loai'] : '';
+    }
+
+    
+    $listSanPham = loadListAll_sanpham($keyword, $loai);
+    
+    $default_page = 1;
+    $per_page = 5;
+    $numberOfPage = 0;
+    $countProd = count($listSanPham);
+
+    if ($countProd % $per_page > 0) {
+        $numberOfPage = ceil($countProd /  $per_page);
+    } else {
+        $numberOfPage = $countProd / $per_page;
+    }
+    
+    
+    $page_btn = '';
+    for ($i=0; $i < $numberOfPage; $i++) { 
+        $page = $i + 1;
+        $page_btn .= "<a href='index.php?act=listsp&page=$page&loai=$loai&k=$keyword' class='btn btn-primary'>$page</a>";
+    }
+
+        $pages = isset($_GET['page']) ? $_GET['page'] : $default_page;
+        $limit = $per_page;
+        $offset = $pages > 1 ? $pages * $per_page - $per_page : 0;
+        
+        $listSanPham = loadListAll_sanpham($keyword, $loai, $limit, $offset);
 ?>
 
 <form action="" method="post">
     <h2>Lọc sản phẩm</h2>
-
-
     <div class="input-group mb-3 row w-50">
     <input type="text" name="keyword" class="form-control w-50" placeholder="Nhập tên sản phẩm cần tìm">
 
-    <select class="form-select" name="iddm">
+    <select class="form-select" name="loai">
     <option selected value="0">Tất cả</option>
     <?php 
         foreach($listdanhmuc as $danhmuc):
@@ -60,7 +91,7 @@
             }
         ?>
         <tr>
-            <td><input type="checkbox" name="<?php echo $id?>"></td>
+            <td><input type="checkbox" data="1" name="<?php echo $id?>"></td>
             <td><?php echo $id?></td>
             <td><?php echo $tensp?></td>
             <td><?php echo $price?></td>
@@ -78,7 +109,13 @@
         <?php endforeach?>
     </tbody>
 
+
 </table>
+<div class="d-flex gap-2 justify-content-center">
+    <?php 
+        echo $page_btn;
+    ?>
+</div>
 <a href="#!" class="btn btn-info">Chọn tất cả</a>
 <a href="#!" class="btn btn-info">Bỏ chọn tất cả</a>
 <a href="#!" class="btn btn-info">Xóa các mục đã chọn</a>

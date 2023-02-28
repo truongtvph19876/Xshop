@@ -15,8 +15,11 @@
         $listdanhmuc = pdo_query($sql);
         return $listdanhmuc;
     }
-    function loadListAll_danhmuc() {
-        $sql = "SELECT * FROM danhmuc ORDER BY id DESC";
+    function loadListAll_danhmuc($keyword = '', $limit = -1, $offset = -1) {
+        $sql = "SELECT * FROM danhmuc WHERE 1";
+        $sql .= !empty($keyword) ? " AND `name` LIKE '%$keyword%'" : ""; 
+        $sql .= " ORDER BY id DESC";
+        $sql .= $limit > 0 ? " LIMIT " . $limit . " OFFSET " . $offset : "";
         $listdanhmuc = pdo_query($sql);
         return $listdanhmuc;
     }

@@ -18,8 +18,8 @@
         return $binhluan;
     }
 
-    function searchComments($keyword = '', $loai = 0) {
-        $sql = "SELECT * FROM binhluan";
+    function searchComments($keyword = '', $loai = 0, $limit = -1, $offset = -1) {
+        $sql = "SELECT `binhluan`.`id` as `idbl`, `id_parent`, `noidung`, `iduser`, `idpro`, `ngaybinhluan` FROM binhluan";
 
         $sql .= $loai == 1 ? " WHERE id = '$keyword'" : "";
 
@@ -32,6 +32,8 @@
         $sql .= $loai == 5 ? " WHERE ngaybinhluan LIKE '%$keyword%'" : "";
 
         $sql .= " ORDER BY ngaybinhluan DESC";
+
+        $sql .= $limit > 0 ? " LIMIT " . $limit . " OFFSET " . $offset : "";
 
         $listComments = pdo_query($sql);
         return $listComments;

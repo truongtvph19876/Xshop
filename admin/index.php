@@ -8,6 +8,7 @@
     include '../model/sanpham.php';
     include '../model/nguoidung.php';
     include '../model/binhluan.php';
+    include '../model/thongke.php';
     include '../model/slideshow.php';
     //controller
     $admin = getUser($_SESSION['idUser']);
@@ -22,7 +23,7 @@
                 break;
             
             case 'listdm':
-                $listdanhmuc = loadListAll_danhmuc();
+                
                 include 'danhmuc/list.php';
                 break;
             
@@ -87,8 +88,7 @@
                 include 'khachhang/signin.php';
                 break;
             case 'dsbl':
-                
-                $listComments = loadComments();
+            
                 include 'binhluan/list.php';
                 break;
             case 'deletecm':
@@ -102,10 +102,15 @@
                 
                 include 'binhluan/updatecm.php';
                 break;
-            case 'thongke':
-                
-                include 'thongke/list.php';
-                break;
+                case 'thongke':
+                    $listtk = loadall_thongke();
+                    include 'thongke/list.php';
+                    break;
+                    
+                case 'bieudo':
+                    $listtk = loadall_thongke();
+                    include 'thongke/bieudo.php';
+                    break;
 
             default:
                 require_once 'home.php';

@@ -248,3 +248,8 @@ footer {
 .outline-0 {
     outline: none !important;;
 }
+
+.prod-item {
+    width: 200px;
+    height: 250px;
+}

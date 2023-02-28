@@ -1,29 +1,34 @@
-<?php
-$page_size = 10; // Number of records to display per page
-$current_page = isset($_GET['page']) ? $_GET['page'] : 1; // Current page number
-$total_records = // Determine the total number of records
 
-// Calculate the starting and ending record numbers for the current page
-$start_record = ($current_page - 1) * $page_size;
-$end_record = $start_record + $page_size - 1;
+<div class="row">
+    <h1>Thống kê sản phẩm theo loại</h1>
+</div>
 
-// Retrieve the data for the current page
-$data = [
-        []
-];// Retrieve data from your dataset using the starting and ending record numbers
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <td>Mã danh mục</td>
+            <td>Tên danh mục</td>
+            <td>Số lượng</td>
+            <td>Gía cao nhất</td>
+            <td>Gía thấp nhất</td>
+            <td>Gía trung bình</td>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+         foreach ($listtk  as $tk):
+            extract($tk);
+        ?>
+        <tr>
+            <td><?php echo $madm?></td>
+            <td><?php echo $tendm?></td>
+            <td><?php echo $countsp?></td>
+            <td><?php echo $maxprice?></td>
+            <td><?php echo $minprice?></td>
+            <td><?php echo $avgprice?></td>
+        </tr>
+        <?php endforeach?>
+    </tbody>
 
-// Display the data on the page
-foreach ($data as $row) {
-    // Display the data here
-}
-
-// Display links to the previous and next pages, as well as any other pages in the dataset
-for ($i = 1; $i <= ceil($total_records / $page_size); $i++) {
-    if ($i == $current_page) {
-        echo $i;
-    } else {
-        echo '<a href="?page=' . $i . '">' . $i . '</a>';
-    }
-}
-
-?>
+</table>
+<a href="index.php?act=bieudo" class="btn btn-info">Biểu đồ danh mục</a>
